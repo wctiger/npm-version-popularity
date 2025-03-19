@@ -1,10 +1,19 @@
 import React from "react";
-import { Table, Card, Typography, Statistic, Tag, Space } from "antd";
+import {
+  Table,
+  Card,
+  Typography,
+  Statistic,
+  Tag,
+  Space,
+  Flex,
+  Divider,
+} from "antd";
 import type { TableProps } from "antd";
 import { CalendarOutlined, DownloadOutlined } from "@ant-design/icons";
 import { PackageInfo, PackageVersion } from "../services/npmService";
 
-const { Title, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 interface PackageResultsProps {
   packageInfo: PackageInfo;
@@ -51,22 +60,38 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
   return (
     <Space direction="vertical" size="large" style={{ width: "100%" }}>
       <Card style={{ width: "100%" }}>
-        <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-          <div>
-            <Title level={2}>{packageInfo.name}</Title>
-            {packageInfo.description && (
-              <Paragraph>{packageInfo.description}</Paragraph>
-            )}
-          </div>
+        <Flex vertical gap="small">
+          {/* Package Header - First Row */}
+          <Flex align="center" justify="space-between" gap="middle" wrap="wrap">
+            <Flex vertical flex={1} style={{ minWidth: "200px" }}>
+              <Title level={3} style={{ margin: 0 }}>
+                {packageInfo.name}
+              </Title>
+              {packageInfo.description && (
+                <Text
+                  type="secondary"
+                  ellipsis={{ tooltip: packageInfo.description }}
+                >
+                  {packageInfo.description}
+                </Text>
+              )}
+            </Flex>
 
-          <Statistic
-            title="Total Downloads (Last Month)"
-            value={formattedDownloads}
-            prefix={<DownloadOutlined />}
-          />
+            <Statistic
+              title="Total Downloads (Last Month)"
+              value={formattedDownloads}
+              prefix={<DownloadOutlined />}
+              style={{ marginLeft: "auto" }}
+            />
+          </Flex>
 
+          <Divider style={{ margin: "12px 0" }} />
+
+          {/* Table Section */}
           <div style={{ width: "100%" }}>
-            <Title level={4}>Version History</Title>
+            <Title level={5} style={{ marginTop: 0 }}>
+              Version History
+            </Title>
             <Table
               columns={columns}
               dataSource={packageInfo.versions.map((version, index) => ({
@@ -78,7 +103,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
               style={{ width: "100%" }}
             />
           </div>
-        </Space>
+        </Flex>
       </Card>
     </Space>
   );
