@@ -1,35 +1,87 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { Layout, Spin, Flex, ConfigProvider, theme } from "antd";
+import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
+import SearchBox from "./components/SearchBox";
+import PackageResults from "./components/PackageResults";
+import ErrorDisplay from "./components/ErrorDisplay";
+import ThemeToggle from "./components/ThemeToggle";
+import { usePackageSearch } from "./hooks/usePackageSearch";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+const { Header, Content, Footer } = Layout;
+const { defaultAlgorithm, darkAlgorithm } = theme;
+
+const AppContent: React.FC = () => {
+  const { isDarkTheme } = useTheme();
+  const {
+    searchTerm,
+    setSearchTerm,
+    searchPackage,
+    loading,
+    error,
+    packageInfo,
+  } = usePackageSearch();
+
+  const handleReset = () => {
+    setSearchTerm("");
+  };
+
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <Flex align="center" justify="center" style={{ minHeight: "50vh" }}>
+          <Spin size="large" tip="Loading package information..." />
+        </Flex>
+      );
+    }
+
+    if (error) {
+      return <ErrorDisplay errorMessage={error} onReset={handleReset} />;
+    }
+
+    if (packageInfo) {
+      return <PackageResults packageInfo={packageInfo} onBack={handleReset} />;
+    }
+
+    return (
+      <SearchBox
+        searchTerm={searchTerm}
+        onSearchTermChange={setSearchTerm}
+        onSearch={searchPackage}
+        isLoading={loading}
+      />
+    );
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <ConfigProvider
+      theme={{
+        algorithm: isDarkTheme ? darkAlgorithm : defaultAlgorithm,
+      }}
+    >
+      <Layout className="app-layout">
+        <Header className="app-header">
+          <div className="app-logo">NPM Version Checker</div>
+          <ThemeToggle />
+        </Header>
+        <Content className="app-content">
+          <div className="app-container">{renderContent()}</div>
+        </Content>
+        <Footer className="app-footer">
+          NPM Version Popularity Checker ©{new Date().getFullYear()} Created
+          with Ant Design
+        </Footer>
+      </Layout>
+    </ConfigProvider>
+  );
+};
 
-export default App
+const App: React.FC = () => {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+};
+
+export default App;
