@@ -24,9 +24,12 @@ export const fetchPackageInfo = async (
   packageName: string
 ): Promise<PackageInfo> => {
   try {
+    // Encode package name for URL safety
+    const encodedPackageName = encodeURIComponent(packageName);
+
     // Fetch basic package info from npm registry
     const registryResponse = await axios.get(
-      `${NPM_REGISTRY_URL}/${packageName}`
+      `${NPM_REGISTRY_URL}/${encodedPackageName}`
     );
     const versionData = registryResponse.data.versions || {};
     const description = registryResponse.data.description;
@@ -45,7 +48,7 @@ export const fetchPackageInfo = async (
 
     // Get download counts for all versions
     const downloadsByVersionResponse = await axios.get(
-      `${NPM_VERSIONS_API_URL.replace("<package-name>", packageName)}`
+      NPM_VERSIONS_API_URL.replace("<package-name>", encodedPackageName)
     );
 
     // map the downloads by version back to each version
