@@ -8,6 +8,7 @@ import {
   Space,
   Flex,
   Divider,
+  Progress,
 } from "antd";
 import type { TableProps } from "antd";
 import { CalendarOutlined, DownloadOutlined } from "@ant-design/icons";
@@ -19,8 +20,28 @@ interface PackageResultsProps {
   packageInfo: PackageInfo;
 }
 
+// Extended version type with percentage
+interface VersionWithPercentage extends PackageVersion {
+  percentage: number;
+}
+
 const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
-  const columns: TableProps<PackageVersion>["columns"] = [
+  // Calculate percentages for each version
+  const versionsWithPercentage: VersionWithPercentage[] = packageInfo.versions
+    .filter((version) => version.downloads > 0)
+    .map((version) => {
+      const percentage =
+        packageInfo.totalDownloads > 0
+          ? (version.downloads / packageInfo.totalDownloads) * 100
+          : 0;
+
+      return {
+        ...version,
+        percentage: parseFloat(percentage.toFixed(2)),
+      };
+    });
+
+  const columns: TableProps<VersionWithPercentage>["columns"] = [
     {
       title: "Version",
       dataIndex: "version",
@@ -30,7 +51,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
           {version}
         </Tag>
       ),
-      width: "20%",
+      width: "15%",
     },
     {
       title: "Release Date",
@@ -42,7 +63,9 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
           {new Date(date).toLocaleDateString()}
         </Space>
       ),
-      width: "40%",
+      width: "30%",
+      sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      defaultSortOrder: "descend",
     },
     {
       title: "Downloads",
@@ -54,7 +77,28 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
           {downloads.toLocaleString()}
         </Space>
       ),
-      width: "40%",
+      width: "25%",
+      sorter: (a, b) => a.downloads - b.downloads,
+    },
+    {
+      title: "Percent",
+      dataIndex: "percentage",
+      key: "percentage",
+      render: (percentage) => (
+        <Space size="small" align="center">
+          <span>{percentage}%</span>
+          <Progress
+            percent={percentage}
+            showInfo={false}
+            strokeColor="#1890ff"
+            size="small"
+            style={{ width: 60 }}
+          />
+        </Space>
+      ),
+      width: "30%",
+      sorter: (a, b) => a.percentage - b.percentage,
+      defaultSortOrder: null, // Remove default sort on this column
     },
   ];
 
@@ -95,7 +139,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
           <div style={{ width: "100%" }}>
             <Table
               columns={columns}
-              dataSource={packageInfo.versions.map((version, index) => ({
+              dataSource={versionsWithPercentage.map((version, index) => ({
                 ...version,
                 key: index,
               }))}

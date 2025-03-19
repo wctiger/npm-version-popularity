@@ -71,6 +71,21 @@
   gap: 2px;
 }
 
+/* Progress bar in table */
+.compact-table .ant-progress {
+  margin: 0;
+  line-height: 1;
+}
+
+.compact-table .ant-progress-inner {
+  height: 6px !important;
+  vertical-align: middle;
+}
+
+.compact-table .ant-space-align-center {
+  gap: 4px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .app-header {
