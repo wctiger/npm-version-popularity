@@ -60,7 +60,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       style={{ padding: "2rem", width: "100%" }}
     >
       <Card
-        bordered={false}
+        variant="outlined"
         style={{
           width: "100%",
           maxWidth: 800,

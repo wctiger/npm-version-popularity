@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Table,
   Card,
@@ -35,6 +35,9 @@ const PackageResults: React.FC<PackageResultsProps> = ({
   versionFilter = "",
   onVersionFilterChange,
 }) => {
+  // Add pagination state
+  const [pageSize, setPageSize] = useState(15);
+
   // Apply semver filter to versions
   const filteredVersions = useMemo(() => {
     const versionsWithDownloads = packageInfo.versions.filter(
@@ -185,7 +188,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({
 
   return (
     <Space direction="vertical" size="large" style={{ width: "100%" }}>
-      <Card style={{ width: "100%" }}>
+      <Card style={{ width: "100%" }} variant="outlined">
         <Flex vertical gap="small">
           {/* Package Header - First Row */}
           <Flex align="center" justify="space-between" gap="middle" wrap="wrap">
@@ -252,7 +255,15 @@ const PackageResults: React.FC<PackageResultsProps> = ({
                 ...version,
                 key: index,
               }))}
-              pagination={{ pageSize: 15, size: "small" }}
+              pagination={{
+                pageSize: pageSize,
+                size: "small",
+                onChange: (page, newPageSize) => {
+                  if (newPageSize !== pageSize) {
+                    setPageSize(newPageSize);
+                  }
+                },
+              }}
               scroll={{ x: true }}
               style={{ width: "100%" }}
               size="small"
