@@ -5,6 +5,7 @@ interface PackageSearchState {
   loading: boolean;
   error: string | null;
   packageInfo: PackageInfo | null;
+  hasSearched: boolean;
 }
 
 export const usePackageSearch = () => {
@@ -13,6 +14,7 @@ export const usePackageSearch = () => {
     loading: false,
     error: null,
     packageInfo: null,
+    hasSearched: false,
   });
 
   const searchPackage = async (packageName: string) => {
@@ -21,6 +23,7 @@ export const usePackageSearch = () => {
         loading: false,
         error: "Please enter a package name",
         packageInfo: null,
+        hasSearched: true,
       });
       return;
     }
@@ -29,6 +32,7 @@ export const usePackageSearch = () => {
       loading: true,
       error: null,
       packageInfo: null,
+      hasSearched: true,
     });
 
     try {
@@ -37,6 +41,7 @@ export const usePackageSearch = () => {
         loading: false,
         error: null,
         packageInfo,
+        hasSearched: true,
       });
     } catch (error) {
       setState({
@@ -46,6 +51,7 @@ export const usePackageSearch = () => {
             ? error.message
             : "Failed to fetch package info",
         packageInfo: null,
+        hasSearched: true,
       });
     }
   };
@@ -57,5 +63,6 @@ export const usePackageSearch = () => {
     loading: state.loading,
     error: state.error,
     packageInfo: state.packageInfo,
+    hasSearched: state.hasSearched,
   };
 };

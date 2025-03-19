@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Spin, Flex, ConfigProvider, theme } from "antd";
+import { Layout, ConfigProvider, theme } from "antd";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 import SearchBox from "./components/SearchBox";
 import PackageResults from "./components/PackageResults";
@@ -20,21 +20,10 @@ const AppContent: React.FC = () => {
     loading,
     error,
     packageInfo,
+    hasSearched,
   } = usePackageSearch();
 
   const renderContent = () => {
-    if (loading) {
-      return (
-        <Flex
-          align="center"
-          justify="center"
-          style={{ minHeight: "200px", width: "100%", marginTop: "24px" }}
-        >
-          <Spin size="large" tip="Loading package information..." />
-        </Flex>
-      );
-    }
-
     if (error) {
       return (
         <ErrorDisplay errorMessage={error} onReset={() => setSearchTerm("")} />
@@ -47,6 +36,11 @@ const AppContent: React.FC = () => {
 
     return null;
   };
+
+  // Determine if we should show the compact search box
+  const showCompactSearch = Boolean(
+    packageInfo || (loading && hasSearched) || (error && hasSearched)
+  );
 
   return (
     <ConfigProvider
@@ -73,7 +67,7 @@ const AppContent: React.FC = () => {
               onSearchTermChange={setSearchTerm}
               onSearch={searchPackage}
               isLoading={loading}
-              isCompact={!!packageInfo}
+              isCompact={showCompactSearch}
             />
             {renderContent()}
           </div>

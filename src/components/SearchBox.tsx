@@ -1,6 +1,6 @@
 import React from "react";
 import { Input, Button, Space, Typography, Card, Flex } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
 
 const { Title, Paragraph } = Typography;
 
@@ -40,15 +40,16 @@ const SearchBox: React.FC<SearchBoxProps> = ({
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             allowClear
+            disabled={isLoading}
           />
           <Button
             size="middle"
             type="primary"
-            icon={<SearchOutlined />}
+            icon={isLoading ? <LoadingOutlined /> : <SearchOutlined />}
             onClick={() => onSearch(searchTerm)}
             loading={isLoading}
           >
-            Search
+            {isLoading ? "Searching..." : "Search"}
           </Button>
         </Space.Compact>
       </Flex>
@@ -87,15 +88,16 @@ const SearchBox: React.FC<SearchBoxProps> = ({
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               allowClear
+              disabled={isLoading}
             />
             <Button
               size="large"
               type="primary"
-              icon={<SearchOutlined />}
+              icon={isLoading ? <LoadingOutlined /> : <SearchOutlined />}
               onClick={() => onSearch(searchTerm)}
               loading={isLoading}
             >
-              Search
+              {isLoading ? "Searching..." : "Search"}
             </Button>
           </Space.Compact>
         </Space>
