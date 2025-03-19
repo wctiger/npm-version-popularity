@@ -76,7 +76,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({
           </div>
 
           <Statistic
-            title="Total Downloads (Last Month)"
+            title="Total Downloads (Last Week)"
             value={formattedDownloads}
             prefix={<DownloadOutlined />}
           />

@@ -14,7 +14,9 @@ export interface PackageInfo {
 }
 
 const NPM_REGISTRY_URL = "https://registry.npmjs.org";
-const NPM_DOWNLOADS_API_URL = "https://api.npmjs.org/downloads/point";
+const NPM_DOWNLOADS_API_URL = "https://api.npmjs.org/downloads/point/last-week";
+const NPM_VERSIONS_API_URL =
+  "https://api.npmjs.org/versions/<package-name>/last-week";
 
 /**
  * Fetches package information from the npm registry
@@ -43,12 +45,21 @@ export const fetchPackageInfo = async (
     );
 
     // Get download counts for all versions
-    // Note: The npm downloads API doesn't provide per-version download counts directly
-    // We're fetching total downloads for the package here
-    const downloadsResponse = await axios.get(
-      `${NPM_DOWNLOADS_API_URL}/last-month/${packageName}`
+
+    const totalDownloadsResponse = await axios.get(
+      `${NPM_DOWNLOADS_API_URL}/${packageName}`
     );
-    const totalDownloads = downloadsResponse.data.downloads || 0;
+    const totalDownloads = totalDownloadsResponse.data.downloads;
+
+    const downloadsByVersionResponse = await axios.get(
+      `${NPM_VERSIONS_API_URL.replace("<package-name>", packageName)}`
+    );
+
+    // map the downloads by version back to each version
+    versions.forEach((version) => {
+      version.downloads =
+        downloadsByVersionResponse.data.downloads[version.version] || 0;
+    });
 
     // Sort versions by date (newest first)
     versions.sort(
