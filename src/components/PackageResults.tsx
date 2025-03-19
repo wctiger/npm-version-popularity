@@ -25,7 +25,11 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
       title: "Version",
       dataIndex: "version",
       key: "version",
-      render: (version) => <Tag color="blue">{version}</Tag>,
+      render: (version) => (
+        <Tag color="blue" style={{ margin: 0 }}>
+          {version}
+        </Tag>
+      ),
       width: "20%",
     },
     {
@@ -33,7 +37,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
       dataIndex: "date",
       key: "date",
       render: (date) => (
-        <Space>
+        <Space size="small">
           <CalendarOutlined />
           {new Date(date).toLocaleDateString()}
         </Space>
@@ -45,7 +49,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
       dataIndex: "downloads",
       key: "downloads",
       render: (downloads) => (
-        <Space>
+        <Space size="small">
           <DownloadOutlined />
           {downloads.toLocaleString()}
         </Space>
@@ -78,7 +82,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
             </Flex>
 
             <Statistic
-              title="Total Downloads (Last Month)"
+              title="Total Downloads (Last Week)"
               value={formattedDownloads}
               prefix={<DownloadOutlined />}
               style={{ marginLeft: "auto" }}
@@ -89,18 +93,18 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
 
           {/* Table Section */}
           <div style={{ width: "100%" }}>
-            <Title level={5} style={{ marginTop: 0 }}>
-              Version History
-            </Title>
             <Table
               columns={columns}
               dataSource={packageInfo.versions.map((version, index) => ({
                 ...version,
                 key: index,
               }))}
-              pagination={{ pageSize: 10 }}
+              pagination={{ pageSize: 15, size: "small" }}
               scroll={{ x: true }}
               style={{ width: "100%" }}
+              size="small"
+              bordered={false}
+              className="compact-table"
             />
           </div>
         </Flex>
