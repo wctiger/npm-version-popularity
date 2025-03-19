@@ -28,12 +28,17 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   };
 
   return (
-    <Flex vertical align="center" gap="middle" style={{ padding: "2rem" }}>
+    <Flex
+      vertical
+      align="center"
+      gap="middle"
+      style={{ padding: "2rem", width: "100%" }}
+    >
       <Card
         bordered={false}
         style={{
           width: "100%",
-          maxWidth: 600,
+          maxWidth: 800,
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
           padding: "1.5rem",
         }}

@@ -7,6 +7,7 @@
 
 .app-layout {
   min-height: 100vh;
+  width: 100%;
 }
 
 .app-header {
@@ -14,6 +15,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
+  width: 100%;
 }
 
 .app-logo {
@@ -24,16 +26,19 @@
 
 .app-content {
   padding: 24px;
+  width: 100%;
 }
 
 .app-container {
-  max-width: 1200px;
+  max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
   padding: 24px;
 }
 
 .app-footer {
   text-align: center;
+  width: 100%;
 }
 
 /* For center search box */
@@ -43,6 +48,7 @@
   align-items: center;
   justify-content: center;
   min-height: 70vh;
+  width: 100%;
 }
 
 /* Responsive adjustments */
@@ -60,10 +66,12 @@
   }
 }
 
+/* Removing width constraint on root */
 #root {
-  max-width: 1280px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
 }
 

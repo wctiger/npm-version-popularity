@@ -25,6 +25,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({
       dataIndex: "version",
       key: "version",
       render: (version) => <Tag color="blue">{version}</Tag>,
+      width: "20%",
     },
     {
       title: "Release Date",
@@ -36,6 +37,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({
           {new Date(date).toLocaleDateString()}
         </Space>
       ),
+      width: "40%",
     },
     {
       title: "Downloads",
@@ -47,6 +49,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({
           {downloads.toLocaleString()}
         </Space>
       ),
+      width: "40%",
     },
   ];
 
@@ -63,7 +66,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({
         Back to Search
       </Button>
 
-      <Card>
+      <Card style={{ width: "100%" }}>
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>
           <div>
             <Title level={2}>{packageInfo.name}</Title>
@@ -78,7 +81,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({
             prefix={<DownloadOutlined />}
           />
 
-          <div>
+          <div style={{ width: "100%" }}>
             <Title level={4}>Version History</Title>
             <Table
               columns={columns}
@@ -87,7 +90,8 @@ const PackageResults: React.FC<PackageResultsProps> = ({
                 key: index,
               }))}
               pagination={{ pageSize: 10 }}
-              scroll={{ x: "max-content" }}
+              scroll={{ x: true }}
+              style={{ width: "100%" }}
             />
           </div>
         </Space>

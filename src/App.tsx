@@ -29,7 +29,11 @@ const AppContent: React.FC = () => {
   const renderContent = () => {
     if (loading) {
       return (
-        <Flex align="center" justify="center" style={{ minHeight: "50vh" }}>
+        <Flex
+          align="center"
+          justify="center"
+          style={{ minHeight: "50vh", width: "100%" }}
+        >
           <Spin size="large" tip="Loading package information..." />
         </Flex>
       );
@@ -57,9 +61,16 @@ const AppContent: React.FC = () => {
     <ConfigProvider
       theme={{
         algorithm: isDarkTheme ? darkAlgorithm : defaultAlgorithm,
+        components: {
+          Layout: {
+            bodyBg: isDarkTheme ? "#000000" : "#f5f5f5",
+            headerBg: isDarkTheme ? "#141414" : "#001529",
+            footerBg: isDarkTheme ? "#141414" : "#f0f2f5",
+          },
+        },
       }}
     >
-      <Layout className="app-layout">
+      <Layout style={{ width: "100%", minHeight: "100vh" }}>
         <Header className="app-header">
           <div className="app-logo">NPM Version Checker</div>
           <ThemeToggle />
