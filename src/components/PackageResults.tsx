@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Table,
   Card,
@@ -9,15 +9,20 @@ import {
   Flex,
   Divider,
   Progress,
+  Badge,
+  Button,
 } from "antd";
 import type { TableProps } from "antd";
 import { CalendarOutlined, DownloadOutlined } from "@ant-design/icons";
 import { PackageInfo, PackageVersion } from "../services/npmService";
+import semver from "semver";
 
 const { Title, Text } = Typography;
 
 interface PackageResultsProps {
   packageInfo: PackageInfo;
+  versionFilter?: string;
+  onVersionFilterChange?: (filter: string) => void;
 }
 
 // Extended version type with percentage
@@ -25,7 +30,11 @@ interface VersionWithPercentage extends PackageVersion {
   percentage: number;
 }
 
-const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
+const PackageResults: React.FC<PackageResultsProps> = ({
+  packageInfo,
+  versionFilter = "",
+  onVersionFilterChange,
+}) => {
   // Calculate percentages for each version
   const versionsWithPercentage: VersionWithPercentage[] = packageInfo.versions
     .filter((version) => version.downloads > 0)
@@ -40,6 +49,31 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
         percentage: parseFloat(percentage.toFixed(2)),
       };
     });
+
+  // Apply semver filter to versions
+  const filteredVersions = useMemo(() => {
+    if (!versionFilter) {
+      return versionsWithPercentage;
+    }
+
+    try {
+      // Clean the filter if needed - semver can be strict
+      const cleanFilter = versionFilter.trim();
+
+      return versionsWithPercentage.filter((v) => {
+        try {
+          return semver.satisfies(v.version, cleanFilter);
+        } catch {
+          // If there's an error in the comparison, include the version
+          return true;
+        }
+      });
+    } catch (error) {
+      // If there's an error with the filter, return all versions
+      console.error("Invalid semver filter:", error);
+      return versionsWithPercentage;
+    }
+  }, [versionsWithPercentage, versionFilter]);
 
   const columns: TableProps<VersionWithPercentage>["columns"] = [
     {
@@ -105,6 +139,10 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
   // Format the total download count to add thousand separators
   const formattedDownloads = packageInfo.totalDownloads.toLocaleString();
 
+  const showFilterBadge =
+    versionFilter && filteredVersions.length !== versionsWithPercentage.length;
+  const filterCount = showFilterBadge ? filteredVersions.length : 0;
+
   return (
     <Space direction="vertical" size="large" style={{ width: "100%" }}>
       <Card style={{ width: "100%" }}>
@@ -137,9 +175,43 @@ const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
 
           {/* Table Section */}
           <div style={{ width: "100%" }}>
+            <Flex
+              align="middle"
+              justify="space-between"
+              style={{ marginBottom: "8px" }}
+            >
+              <Title level={5} style={{ margin: 0 }}>
+                Version History
+                {showFilterBadge && (
+                  <Badge
+                    count={filterCount}
+                    style={{
+                      marginLeft: "10px",
+                      backgroundColor: "#1890ff",
+                      fontSize: "12px",
+                    }}
+                  />
+                )}
+              </Title>
+              {showFilterBadge && (
+                <Text type="secondary">
+                  Filtered by: {versionFilter}
+                  {onVersionFilterChange && (
+                    <Button
+                      type="link"
+                      size="small"
+                      onClick={() => onVersionFilterChange("")}
+                      style={{ padding: "0 4px" }}
+                    >
+                      Clear
+                    </Button>
+                  )}
+                </Text>
+              )}
+            </Flex>
             <Table
               columns={columns}
-              dataSource={versionsWithPercentage.map((version, index) => ({
+              dataSource={filteredVersions.map((version, index) => ({
                 ...version,
                 key: index,
               }))}

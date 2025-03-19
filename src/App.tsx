@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Layout, ConfigProvider, theme } from "antd";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 import SearchBox from "./components/SearchBox";
@@ -23,6 +23,9 @@ const AppContent: React.FC = () => {
     hasSearched,
   } = usePackageSearch();
 
+  // State for version filter
+  const [versionFilter, setVersionFilter] = useState("");
+
   const renderContent = () => {
     if (error) {
       return (
@@ -31,7 +34,13 @@ const AppContent: React.FC = () => {
     }
 
     if (packageInfo) {
-      return <PackageResults packageInfo={packageInfo} />;
+      return (
+        <PackageResults
+          packageInfo={packageInfo}
+          versionFilter={versionFilter}
+          onVersionFilterChange={setVersionFilter}
+        />
+      );
     }
 
     return null;
@@ -68,6 +77,7 @@ const AppContent: React.FC = () => {
               onSearch={searchPackage}
               isLoading={loading}
               isCompact={showCompactSearch}
+              onVersionFilter={packageInfo ? setVersionFilter : undefined}
             />
             {renderContent()}
           </div>
