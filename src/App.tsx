@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Layout, ConfigProvider, theme } from "antd";
+import { Layout, ConfigProvider, theme, Typography } from "antd";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 import SearchBox from "./components/SearchBox";
 import PackageResults from "./components/PackageResults";
@@ -10,6 +10,10 @@ import "./App.css";
 
 const { Header, Content, Footer } = Layout;
 const { defaultAlgorithm, darkAlgorithm } = theme;
+const { Link } = Typography;
+
+// Define a vibrant primary color
+const primaryColor = "#238636"; // GitHub green
 
 const AppContent: React.FC = () => {
   const { isDarkTheme } = useTheme();
@@ -21,10 +25,18 @@ const AppContent: React.FC = () => {
     error,
     packageInfo,
     hasSearched,
+    resetSearch,
   } = usePackageSearch();
 
   // State for version filter
   const [versionFilter, setVersionFilter] = useState("");
+
+  // Handle logo click to reset the app to home state
+  const handleLogoClick = () => {
+    resetSearch();
+    setSearchTerm("");
+    setVersionFilter("");
+  };
 
   const renderContent = () => {
     if (error) {
@@ -55,18 +67,33 @@ const AppContent: React.FC = () => {
     <ConfigProvider
       theme={{
         algorithm: isDarkTheme ? darkAlgorithm : defaultAlgorithm,
+        token: {
+          colorPrimary: primaryColor,
+        },
         components: {
           Layout: {
             bodyBg: isDarkTheme ? "#000000" : "#f5f5f5",
-            headerBg: isDarkTheme ? "#141414" : "#001529",
+            headerBg: isDarkTheme ? "#141414" : "#24292F",
             footerBg: isDarkTheme ? "#141414" : "#f0f2f5",
+          },
+          Button: {
+            colorPrimaryHover: isDarkTheme ? "#2EA043" : "#2EA043",
+          },
+          Progress: {
+            colorInfo: primaryColor,
           },
         },
       }}
     >
       <Layout style={{ width: "100%", minHeight: "100vh" }}>
         <Header className="app-header">
-          <div className="app-logo">NPM Version Checker</div>
+          <Link
+            className="app-logo"
+            onClick={handleLogoClick}
+            style={{ color: "white", cursor: "pointer" }}
+          >
+            NPM Version Popularity
+          </Link>
           <ThemeToggle />
         </Header>
         <Content className="app-content">
@@ -83,8 +110,7 @@ const AppContent: React.FC = () => {
           </div>
         </Content>
         <Footer className="app-footer">
-          NPM Version Popularity Checker ©{new Date().getFullYear()} Created
-          with Ant Design
+          NPM Version Popularity ©{new Date().getFullYear()}
         </Footer>
       </Layout>
     </ConfigProvider>

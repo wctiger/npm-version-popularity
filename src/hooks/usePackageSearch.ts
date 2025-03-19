@@ -56,10 +56,21 @@ export const usePackageSearch = () => {
     }
   };
 
+  // Reset the search state to default values
+  const resetSearch = () => {
+    setState({
+      loading: false,
+      error: null,
+      packageInfo: null,
+      hasSearched: false,
+    });
+  };
+
   return {
     searchTerm,
     setSearchTerm,
     searchPackage,
+    resetSearch,
     loading: state.loading,
     error: state.error,
     packageInfo: state.packageInfo,

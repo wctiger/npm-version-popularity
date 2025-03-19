@@ -118,7 +118,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({
       dataIndex: "version",
       key: "version",
       render: (version) => (
-        <Tag color="blue" style={{ margin: 0 }}>
+        <Tag color="green" style={{ margin: 0 }}>
           {version}
         </Tag>
       ),
