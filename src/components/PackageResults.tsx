@@ -35,32 +35,32 @@ const PackageResults: React.FC<PackageResultsProps> = ({
   versionFilter = "",
   onVersionFilterChange,
 }) => {
-  // Calculate percentages for each version
-  const versionsWithPercentage: VersionWithPercentage[] = packageInfo.versions
-    .filter((version) => version.downloads > 0)
-    .map((version) => {
-      const percentage =
-        packageInfo.totalDownloads > 0
-          ? (version.downloads / packageInfo.totalDownloads) * 100
-          : 0;
-
-      return {
-        ...version,
-        percentage: parseFloat(percentage.toFixed(2)),
-      };
-    });
-
   // Apply semver filter to versions
   const filteredVersions = useMemo(() => {
+    const versionsWithDownloads = packageInfo.versions.filter(
+      (version) => version.downloads > 0
+    );
+
     if (!versionFilter) {
-      return versionsWithPercentage;
+      return versionsWithDownloads.map((version) => {
+        const percentage =
+          packageInfo.totalDownloads > 0
+            ? (version.downloads / packageInfo.totalDownloads) * 100
+            : 0;
+
+        return {
+          ...version,
+          percentage: parseFloat(percentage.toFixed(2)),
+        };
+      });
     }
 
     try {
       // Clean the filter if needed - semver can be strict
       const cleanFilter = versionFilter.trim();
 
-      return versionsWithPercentage.filter((v) => {
+      // Filter versions by semver
+      const filtered = versionsWithDownloads.filter((v) => {
         try {
           return semver.satisfies(v.version, cleanFilter);
         } catch {
@@ -68,12 +68,49 @@ const PackageResults: React.FC<PackageResultsProps> = ({
           return true;
         }
       });
+
+      // Calculate total downloads for filtered versions
+      const filteredTotalDownloads = filtered.reduce(
+        (total, v) => total + v.downloads,
+        0
+      );
+
+      // Calculate percentages based on filtered total
+      return filtered.map((version) => {
+        const percentage =
+          filteredTotalDownloads > 0
+            ? (version.downloads / filteredTotalDownloads) * 100
+            : 0;
+
+        return {
+          ...version,
+          percentage: parseFloat(percentage.toFixed(2)),
+        };
+      });
     } catch (error) {
-      // If there's an error with the filter, return all versions
+      // If there's an error with the filter, return all versions with original percentages
       console.error("Invalid semver filter:", error);
-      return versionsWithPercentage;
+      return versionsWithDownloads.map((version) => {
+        const percentage =
+          packageInfo.totalDownloads > 0
+            ? (version.downloads / packageInfo.totalDownloads) * 100
+            : 0;
+
+        return {
+          ...version,
+          percentage: parseFloat(percentage.toFixed(2)),
+        };
+      });
     }
-  }, [versionsWithPercentage, versionFilter]);
+  }, [packageInfo.versions, packageInfo.totalDownloads, versionFilter]);
+
+  // Calculate total downloads of filtered versions
+  const filteredTotalDownloads = useMemo(() => {
+    return filteredVersions.reduce(
+      (total, version) => total + version.downloads,
+      0
+    );
+  }, [filteredVersions]);
 
   const columns: TableProps<VersionWithPercentage>["columns"] = [
     {
@@ -136,12 +173,15 @@ const PackageResults: React.FC<PackageResultsProps> = ({
     },
   ];
 
-  // Format the total download count to add thousand separators
-  const formattedDownloads = packageInfo.totalDownloads.toLocaleString();
+  // Determine if filter is active
+  const isFilterActive =
+    versionFilter && filteredVersions.length !== packageInfo.versions.length;
 
-  const showFilterBadge =
-    versionFilter && filteredVersions.length !== versionsWithPercentage.length;
-  const filterCount = showFilterBadge ? filteredVersions.length : 0;
+  // Format the download count to add thousand separators
+  const formattedDownloads = filteredTotalDownloads.toLocaleString();
+
+  // Filter badge details
+  const filterCount = filteredVersions.length;
 
   return (
     <Space direction="vertical" size="large" style={{ width: "100%" }}>
@@ -163,39 +203,30 @@ const PackageResults: React.FC<PackageResultsProps> = ({
               )}
             </Flex>
 
-            <Statistic
-              title="Total Downloads (Last Week)"
-              value={formattedDownloads}
-              prefix={<DownloadOutlined />}
-              style={{ marginLeft: "auto" }}
-            />
-          </Flex>
-
-          <Divider style={{ margin: "12px 0" }} />
-
-          {/* Table Section */}
-          <div style={{ width: "100%" }}>
-            <Flex
-              align="middle"
-              justify="space-between"
-              style={{ marginBottom: "8px" }}
-            >
-              <Title level={5} style={{ margin: 0 }}>
-                Version History
-                {showFilterBadge && (
-                  <Badge
-                    count={filterCount}
-                    style={{
-                      marginLeft: "10px",
-                      backgroundColor: "#1890ff",
-                      fontSize: "12px",
-                    }}
-                  />
-                )}
-              </Title>
-              {showFilterBadge && (
-                <Text type="secondary">
-                  Filtered by: {versionFilter}
+            <Flex vertical align="end">
+              <Statistic
+                title={
+                  <Space>
+                    {isFilterActive
+                      ? "Filtered Downloads (Last Week)"
+                      : "Total Downloads (Last Week)"}
+                    {isFilterActive && (
+                      <Badge
+                        count={filterCount}
+                        style={{
+                          backgroundColor: "#1890ff",
+                          fontSize: "12px",
+                        }}
+                      />
+                    )}
+                  </Space>
+                }
+                value={formattedDownloads}
+                prefix={<DownloadOutlined />}
+              />
+              {isFilterActive && (
+                <Space size="small">
+                  <Text type="secondary">Filtered by: {versionFilter}</Text>
                   {onVersionFilterChange && (
                     <Button
                       type="link"
@@ -206,9 +237,15 @@ const PackageResults: React.FC<PackageResultsProps> = ({
                       Clear
                     </Button>
                   )}
-                </Text>
+                </Space>
               )}
             </Flex>
+          </Flex>
+
+          <Divider style={{ margin: "12px 0" }} />
+
+          {/* Table Section */}
+          <div style={{ width: "100%" }}>
             <Table
               columns={columns}
               dataSource={filteredVersions.map((version, index) => ({
