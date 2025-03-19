@@ -45,12 +45,12 @@ export const fetchPackageInfo = async (
     );
 
     // Get download counts for all versions
-
     const totalDownloadsResponse = await axios.get(
       `${NPM_DOWNLOADS_API_URL}/${packageName}`
     );
     const totalDownloads = totalDownloadsResponse.data.downloads;
 
+    // Get download counts for all versions
     const downloadsByVersionResponse = await axios.get(
       `${NPM_VERSIONS_API_URL.replace("<package-name>", packageName)}`
     );

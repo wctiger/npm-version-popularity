@@ -1,6 +1,6 @@
 import React from "react";
-import { Result, Button } from "antd";
-import { WarningOutlined } from "@ant-design/icons";
+import { Alert, Button, Space } from "antd";
+import { ReloadOutlined } from "@ant-design/icons";
 
 interface ErrorDisplayProps {
   errorMessage: string;
@@ -12,17 +12,19 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
   onReset,
 }) => {
   return (
-    <Result
-      status="error"
-      title="Error"
-      subTitle={errorMessage}
-      icon={<WarningOutlined />}
-      extra={[
-        <Button key="back" type="primary" onClick={onReset}>
-          Try Again
-        </Button>,
-      ]}
-    />
+    <Space direction="vertical" style={{ width: "100%", marginTop: "24px" }}>
+      <Alert
+        message="Error"
+        description={errorMessage}
+        type="error"
+        showIcon
+        action={
+          <Button icon={<ReloadOutlined />} size="small" onClick={onReset}>
+            Clear
+          </Button>
+        }
+      />
+    </Space>
   );
 };
 

@@ -1,24 +1,16 @@
 import React from "react";
-import { Table, Card, Typography, Statistic, Tag, Space, Button } from "antd";
+import { Table, Card, Typography, Statistic, Tag, Space } from "antd";
 import type { TableProps } from "antd";
-import {
-  CalendarOutlined,
-  DownloadOutlined,
-  ArrowLeftOutlined,
-} from "@ant-design/icons";
+import { CalendarOutlined, DownloadOutlined } from "@ant-design/icons";
 import { PackageInfo, PackageVersion } from "../services/npmService";
 
 const { Title, Paragraph } = Typography;
 
 interface PackageResultsProps {
   packageInfo: PackageInfo;
-  onBack: () => void;
 }
 
-const PackageResults: React.FC<PackageResultsProps> = ({
-  packageInfo,
-  onBack,
-}) => {
+const PackageResults: React.FC<PackageResultsProps> = ({ packageInfo }) => {
   const columns: TableProps<PackageVersion>["columns"] = [
     {
       title: "Version",
@@ -58,14 +50,6 @@ const PackageResults: React.FC<PackageResultsProps> = ({
 
   return (
     <Space direction="vertical" size="large" style={{ width: "100%" }}>
-      <Button
-        icon={<ArrowLeftOutlined />}
-        onClick={onBack}
-        style={{ marginBottom: "1rem" }}
-      >
-        Back to Search
-      </Button>
-
       <Card style={{ width: "100%" }}>
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>
           <div>
@@ -76,7 +60,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({
           </div>
 
           <Statistic
-            title="Total Downloads (Last Week)"
+            title="Total Downloads (Last Month)"
             value={formattedDownloads}
             prefix={<DownloadOutlined />}
           />

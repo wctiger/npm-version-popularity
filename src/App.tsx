@@ -22,17 +22,13 @@ const AppContent: React.FC = () => {
     packageInfo,
   } = usePackageSearch();
 
-  const handleReset = () => {
-    setSearchTerm("");
-  };
-
   const renderContent = () => {
     if (loading) {
       return (
         <Flex
           align="center"
           justify="center"
-          style={{ minHeight: "50vh", width: "100%" }}
+          style={{ minHeight: "200px", width: "100%", marginTop: "24px" }}
         >
           <Spin size="large" tip="Loading package information..." />
         </Flex>
@@ -40,21 +36,16 @@ const AppContent: React.FC = () => {
     }
 
     if (error) {
-      return <ErrorDisplay errorMessage={error} onReset={handleReset} />;
+      return (
+        <ErrorDisplay errorMessage={error} onReset={() => setSearchTerm("")} />
+      );
     }
 
     if (packageInfo) {
-      return <PackageResults packageInfo={packageInfo} onBack={handleReset} />;
+      return <PackageResults packageInfo={packageInfo} />;
     }
 
-    return (
-      <SearchBox
-        searchTerm={searchTerm}
-        onSearchTermChange={setSearchTerm}
-        onSearch={searchPackage}
-        isLoading={loading}
-      />
-    );
+    return null;
   };
 
   return (
@@ -76,7 +67,16 @@ const AppContent: React.FC = () => {
           <ThemeToggle />
         </Header>
         <Content className="app-content">
-          <div className="app-container">{renderContent()}</div>
+          <div className="app-container">
+            <SearchBox
+              searchTerm={searchTerm}
+              onSearchTermChange={setSearchTerm}
+              onSearch={searchPackage}
+              isLoading={loading}
+              isCompact={!!packageInfo}
+            />
+            {renderContent()}
+          </div>
         </Content>
         <Footer className="app-footer">
           NPM Version Popularity Checker ©{new Date().getFullYear()} Created

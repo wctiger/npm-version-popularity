@@ -9,6 +9,7 @@ interface SearchBoxProps {
   onSearchTermChange: (value: string) => void;
   onSearch: (packageName: string) => void;
   isLoading: boolean;
+  isCompact?: boolean;
 }
 
 const SearchBox: React.FC<SearchBoxProps> = ({
@@ -16,6 +17,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   onSearchTermChange,
   onSearch,
   isLoading,
+  isCompact = false,
 }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onSearchTermChange(e.target.value);
@@ -26,6 +28,32 @@ const SearchBox: React.FC<SearchBoxProps> = ({
       onSearch(searchTerm);
     }
   };
+
+  if (isCompact) {
+    return (
+      <Flex align="center" style={{ marginBottom: "24px" }}>
+        <Space.Compact style={{ width: "100%", maxWidth: "600px" }}>
+          <Input
+            size="middle"
+            placeholder="Enter package name (e.g., react, lodash, axios)"
+            value={searchTerm}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            allowClear
+          />
+          <Button
+            size="middle"
+            type="primary"
+            icon={<SearchOutlined />}
+            onClick={() => onSearch(searchTerm)}
+            loading={isLoading}
+          >
+            Search
+          </Button>
+        </Space.Compact>
+      </Flex>
+    );
+  }
 
   return (
     <Flex
