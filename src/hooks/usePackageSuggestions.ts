@@ -5,22 +5,13 @@ import {
   NpmPackageSuggestion,
 } from "../services/npmAutocompleteService";
 
-export interface AutoCompleteOption {
-  value: string;
-  label: React.ReactNode;
-}
-
 /**
  * Custom hook for managing npm package suggestions
  * @param searchTerm The current search term
- * @param renderSuggestion Function to render a suggestion label component
- * @returns Suggestion options, loading state, and handle input change function
+ * @returns Raw package suggestion data, loading state, and input change handler
  */
-export function usePackageSuggestions(
-  searchTerm: string,
-  renderSuggestion: (pkg: NpmPackageSuggestion) => React.ReactNode
-) {
-  const [suggestions, setSuggestions] = useState<AutoCompleteOption[]>([]);
+export function usePackageSuggestions(searchTerm: string) {
+  const [suggestions, setSuggestions] = useState<NpmPackageSuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // Debounced function to fetch package suggestions
@@ -35,18 +26,14 @@ export function usePackageSuggestions(
         setIsLoading(true);
         try {
           const packages = await fetchPackageSuggestions(value);
-          const options = packages.map((pkg: NpmPackageSuggestion) => ({
-            value: pkg.name,
-            label: renderSuggestion(pkg),
-          }));
-          setSuggestions(options);
+          setSuggestions(packages);
         } catch (error) {
           console.error("Error fetching suggestions:", error);
         } finally {
           setIsLoading(false);
         }
       }, 300),
-    [renderSuggestion]
+    []
   );
 
   // Clear suggestions when searchTerm is empty

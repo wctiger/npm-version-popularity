@@ -1,7 +1,6 @@
-import React, { useCallback } from "react";
+import React, { useMemo } from "react";
 import { AutoComplete, Button, Space, Input, Spin } from "antd";
 import { SearchOutlined, LoadingOutlined } from "@ant-design/icons";
-import { NpmPackageSuggestion } from "../services/npmAutocompleteService";
 import { usePackageSuggestions } from "../hooks/usePackageSuggestions";
 import PackageSuggestionLabel from "./PackageSuggestionLabel";
 
@@ -15,6 +14,11 @@ interface PackageSearchInputProps {
   style?: React.CSSProperties;
 }
 
+interface AutoCompleteOption {
+  value: string;
+  label: React.ReactNode;
+}
+
 const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
   searchTerm,
   onSearchTermChange,
@@ -23,17 +27,20 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
   size = "middle",
   style,
 }) => {
-  // Render function for suggestion items
-  const renderSuggestion = useCallback((pkg: NpmPackageSuggestion) => {
-    return <PackageSuggestionLabel package={pkg} />;
-  }, []);
-
   // Use our custom hook for package suggestions
   const {
-    suggestions,
+    suggestions: packageSuggestions,
     isLoading: fetchingSuggestions,
     handleInputChange,
-  } = usePackageSuggestions(searchTerm, renderSuggestion);
+  } = usePackageSuggestions(searchTerm);
+
+  // Transform raw package data into AutoComplete options
+  const autoCompleteOptions = useMemo<AutoCompleteOption[]>(() => {
+    return packageSuggestions.map((pkg) => ({
+      value: pkg.name,
+      label: <PackageSuggestionLabel package={pkg} />,
+    }));
+  }, [packageSuggestions]);
 
   const handleLocalInputChange = (value: string) => {
     onSearchTermChange(value);
@@ -63,7 +70,7 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
       <AutoComplete
         style={{ width: "100%" }}
         value={searchTerm}
-        options={suggestions}
+        options={autoCompleteOptions}
         onSelect={handleSelect}
         onChange={handleLocalInputChange}
         notFoundContent={notFoundContent}
