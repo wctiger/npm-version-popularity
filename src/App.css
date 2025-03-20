@@ -41,6 +41,13 @@
   width: 100%;
 }
 
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
 /* For center search box */
 .search-center-container {
   display: flex;

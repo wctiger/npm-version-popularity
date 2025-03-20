@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Layout, ConfigProvider, theme, Typography } from "antd";
+import { Layout, ConfigProvider, theme, Typography, Button } from "antd";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 import SearchBox from "./components/SearchBox";
 import PackageResults from "./components/PackageResults";
 import ErrorDisplay from "./components/ErrorDisplay";
 import ThemeToggle from "./components/ThemeToggle";
+import { GithubOutlined } from "@ant-design/icons";
 import { usePackageSearch } from "./hooks/usePackageSearch";
 import "./App.css";
 
@@ -110,7 +111,20 @@ const AppContent: React.FC = () => {
           </div>
         </Content>
         <Footer className="app-footer">
-          NPM Version Popularity ©{new Date().getFullYear()}
+          <div className="footer-content">
+            <span>NPM Version Popularity ©{new Date().getFullYear()}</span>
+            <Button
+              type="link"
+              href="https://github.com/wctiger/npm-version-popularity"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: "14px" }}
+              icon={<GithubOutlined />}
+              aria-label="View on GitHub"
+            >
+              View on GitHub
+            </Button>
+          </div>
         </Footer>
       </Layout>
     </ConfigProvider>
