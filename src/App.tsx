@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import AntdProvider from "./contexts/AntdProvider";
 import AppLayout from "./components/AppLayout";
@@ -6,9 +6,16 @@ import SearchBox from "./components/SearchBox";
 import PackageResults from "./components/PackageResults";
 import ErrorDisplay from "./components/ErrorDisplay";
 import { usePackageSearch } from "./hooks/usePackageSearch";
+import { useSearchParams } from "./hooks/useSearchParams";
 import "./App.css";
 
 const AppContent: React.FC = () => {
+  // URL params state management
+  const { params, setParam, resetParams } = useSearchParams({
+    q: "",
+    filter: "",
+  });
+
   const {
     searchTerm,
     setSearchTerm,
@@ -20,20 +27,52 @@ const AppContent: React.FC = () => {
     resetSearch,
   } = usePackageSearch();
 
-  // State for version filter
-  const [versionFilter, setVersionFilter] = useState("");
+  // Sync URL params with local state
+  useEffect(() => {
+    if (params.q && params.q !== searchTerm) {
+      setSearchTerm(params.q);
+      // Auto-search if there's a package name in URL
+      if (params.q.trim()) {
+        searchPackage(params.q);
+      }
+    }
+  }, [params.q, searchTerm, setSearchTerm, searchPackage]);
+
+  // Update URL when search term changes
+  useEffect(() => {
+    if (searchTerm !== params.q) {
+      setParam("q", searchTerm);
+    }
+  }, [searchTerm, params.q, setParam]);
+
+  // Handle search term changes
+  const handleSearchTermChange = (value: string) => {
+    setSearchTerm(value);
+    setParam("q", value);
+  };
+
+  // Handle version filter changes
+  const handleVersionFilterChange = (filter: string) => {
+    setParam("filter", filter);
+  };
 
   // Handle logo click to reset the app to home state
   const handleLogoClick = () => {
     resetSearch();
     setSearchTerm("");
-    setVersionFilter("");
+    resetParams();
   };
 
   const renderContent = () => {
     if (error) {
       return (
-        <ErrorDisplay errorMessage={error} onReset={() => setSearchTerm("")} />
+        <ErrorDisplay
+          errorMessage={error}
+          onReset={() => {
+            setSearchTerm("");
+            setParam("q", "");
+          }}
+        />
       );
     }
 
@@ -41,8 +80,8 @@ const AppContent: React.FC = () => {
       return (
         <PackageResults
           packageInfo={packageInfo}
-          versionFilter={versionFilter}
-          onVersionFilterChange={setVersionFilter}
+          versionFilter={params.filter}
+          onVersionFilterChange={handleVersionFilterChange}
         />
       );
     }
@@ -59,11 +98,12 @@ const AppContent: React.FC = () => {
     <AppLayout onLogoClick={handleLogoClick}>
       <SearchBox
         searchTerm={searchTerm}
-        onSearchTermChange={setSearchTerm}
+        onSearchTermChange={handleSearchTermChange}
         onSearch={searchPackage}
         isLoading={loading}
         isCompact={showCompactSearch}
-        onVersionFilter={packageInfo ? setVersionFilter : undefined}
+        onVersionFilter={packageInfo ? handleVersionFilterChange : undefined}
+        versionFilter={params.filter}
       />
       {renderContent()}
     </AppLayout>

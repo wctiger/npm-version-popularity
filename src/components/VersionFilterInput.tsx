@@ -1,33 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Button, Space, Tooltip } from "antd";
 import { FilterOutlined } from "@ant-design/icons";
 
 // Version Filter Input Component interface
 interface VersionFilterInputProps {
   onVersionFilter: (filter: string) => void;
+  versionFilter?: string;
   isLoading: boolean;
   style?: React.CSSProperties;
 }
 
 const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
   onVersionFilter,
+  versionFilter = "",
   isLoading,
   style,
 }) => {
-  const [versionFilter, setVersionFilter] = useState("");
+  const [inputValue, setInputValue] = useState(versionFilter);
+
+  // Sync input value with prop when it changes externally
+  useEffect(() => {
+    setInputValue(versionFilter);
+  }, [versionFilter]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVersionFilter(e.target.value);
+    setInputValue(e.target.value);
   };
 
   const handleFilterKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      onVersionFilter(versionFilter);
+      onVersionFilter(inputValue);
     }
   };
 
   const applyFilter = () => {
-    onVersionFilter(versionFilter);
+    onVersionFilter(inputValue);
+  };
+
+  const handleClear = () => {
+    setInputValue("");
+    onVersionFilter("");
   };
 
   return (
@@ -36,10 +48,11 @@ const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
         <Input
           size="middle"
           placeholder="Version filter (e.g., ^3.0.0)"
-          value={versionFilter}
+          value={inputValue}
           onChange={handleFilterChange}
           onKeyDown={handleFilterKeyDown}
           allowClear
+          onClear={handleClear}
           disabled={isLoading}
         />
       </Tooltip>

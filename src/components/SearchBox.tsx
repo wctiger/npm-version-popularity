@@ -12,6 +12,7 @@ interface SearchBoxProps {
   isLoading: boolean;
   isCompact?: boolean;
   onVersionFilter?: (filter: string) => void;
+  versionFilter?: string;
 }
 
 const SearchBox: React.FC<SearchBoxProps> = ({
@@ -21,6 +22,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   isLoading,
   isCompact = false,
   onVersionFilter,
+  versionFilter,
 }) => {
   if (isCompact) {
     return (
@@ -44,6 +46,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
         {onVersionFilter && (
           <VersionFilterInput
             onVersionFilter={onVersionFilter}
+            versionFilter={versionFilter}
             isLoading={isLoading}
             style={{ flex: "1 0 200px", maxWidth: "300px", marginLeft: "auto" }}
           />
