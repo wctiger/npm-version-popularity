@@ -1,9 +1,7 @@
 import React from "react";
-import { Typography, Card, Flex, Space } from "antd";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import PackageSearchInput from "./PackageSearchInput";
 import VersionFilterInput from "./VersionFilterInput";
-
-const { Title, Paragraph } = Typography;
 
 interface SearchBoxProps {
   searchTerm: string;
@@ -26,70 +24,53 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 }) => {
   if (isCompact) {
     return (
-      <Flex
-        align="center"
-        gap="middle"
-        style={{ marginBottom: "24px" }}
-        wrap="wrap"
-        justify="space-between"
-      >
+      <div className="flex items-center gap-4 mb-6 flex-wrap justify-between">
         {/* Search Input */}
-        <PackageSearchInput
-          searchTerm={searchTerm}
-          onSearchTermChange={onSearchTermChange}
-          onSearch={onSearch}
-          isLoading={isLoading}
-          style={{ flex: "2 0 300px", maxWidth: "400px" }}
-        />
+        <div className="flex-[2_0_300px] max-w-md">
+          <PackageSearchInput
+            searchTerm={searchTerm}
+            onSearchTermChange={onSearchTermChange}
+            onSearch={onSearch}
+            isLoading={isLoading}
+          />
+        </div>
 
         {/* Version Filter Input */}
         {onVersionFilter && (
-          <VersionFilterInput
-            onVersionFilter={onVersionFilter}
-            versionFilter={versionFilter}
-            isLoading={isLoading}
-            style={{ flex: "1 0 200px", maxWidth: "300px", marginLeft: "auto" }}
-          />
+          <div className="flex-[1_0_200px] max-w-sm ml-auto">
+            <VersionFilterInput
+              onVersionFilter={onVersionFilter}
+              versionFilter={versionFilter}
+              isLoading={isLoading}
+            />
+          </div>
         )}
-      </Flex>
+      </div>
     );
   }
 
   return (
-    <Flex
-      vertical
-      align="center"
-      gap="middle"
-      style={{ padding: "2rem", width: "100%" }}
-    >
-      <Card
-        variant="outlined"
-        style={{
-          width: "100%",
-          maxWidth: 800,
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-          padding: "1.5rem",
-        }}
-      >
-        <Space direction="vertical" size="large" style={{ width: "100%" }}>
-          <div style={{ textAlign: "center" }}>
-            <Title level={2}>NPM Version Popularity</Title>
-            <Paragraph>
-              Get information about package versions and their download counts
-            </Paragraph>
-          </div>
-
+    <div className="flex flex-col items-center gap-6 p-8 w-full">
+      <Card className="w-full max-w-4xl shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+        <CardHeader className="text-center pb-4">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+            NPM Version Popularity
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Get information about package versions and their download counts
+          </p>
+        </CardHeader>
+        <CardContent>
           <PackageSearchInput
             searchTerm={searchTerm}
             onSearchTermChange={onSearchTermChange}
             onSearch={onSearch}
             isLoading={isLoading}
             size="large"
-            style={{ width: "100%" }}
           />
-        </Space>
+        </CardContent>
       </Card>
-    </Flex>
+    </div>
   );
 };
 

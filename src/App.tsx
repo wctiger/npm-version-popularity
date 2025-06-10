@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import AntdProvider from "./contexts/AntdProvider";
 import AppLayout from "./components/AppLayout";
 import SearchBox from "./components/SearchBox";
 import PackageResults from "./components/PackageResults";
 import ErrorDisplay from "./components/ErrorDisplay";
 import { usePackageSearch } from "./hooks/usePackageSearch";
 import { useSearchParams } from "./hooks/useSearchParams";
-import "./App.css";
 
 const AppContent: React.FC = () => {
   // URL params state management
@@ -111,13 +108,7 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => {
-  return (
-    <ThemeProvider>
-      <AntdProvider>
-        <AppContent />
-      </AntdProvider>
-    </ThemeProvider>
-  );
+  return <AppContent />;
 };
 
 export default App;

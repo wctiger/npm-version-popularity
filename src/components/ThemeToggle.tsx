@@ -1,84 +1,53 @@
-import { useState } from "react";
-import { Button, Dropdown, Space } from "antd";
-import {
-  SunOutlined,
-  MoonOutlined,
-  SettingOutlined,
-  DownOutlined,
-} from "@ant-design/icons";
-import { useTheme } from "../contexts/ThemeContext";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Sun, Moon } from "lucide-react";
 
 const ThemeToggle: React.FC = () => {
-  const { themeMode, setThemeMode } = useTheme();
-  const [open, setOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
 
-  const items = [
-    {
-      key: "light",
-      label: (
-        <Space>
-          <SunOutlined />
-          Light
-        </Space>
-      ),
-    },
-    {
-      key: "dark",
-      label: (
-        <Space>
-          <MoonOutlined />
-          Dark
-        </Space>
-      ),
-    },
-    {
-      key: "system",
-      label: (
-        <Space>
-          <SettingOutlined />
-          System
-        </Space>
-      ),
-    },
-  ];
+  // Initialize theme on mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
 
-  const handleMenuClick = ({ key }: { key: string }) => {
-    setThemeMode(key as "light" | "dark" | "system");
-    setOpen(false);
-  };
+    // Clear any existing classes first
+    document.documentElement.classList.remove("dark");
 
-  const themeIcons = {
-    light: <SunOutlined />,
-    dark: <MoonOutlined />,
-    system: <SettingOutlined />,
-  };
+    const shouldBeDark = savedTheme === "dark" || (!savedTheme && prefersDark);
 
-  const themeLabels = {
-    light: "Light",
-    dark: "Dark",
-    system: "System",
+    if (shouldBeDark) {
+      document.documentElement.classList.add("dark");
+      setIsDark(true);
+    } else {
+      setIsDark(false);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newIsDark = !isDark;
+    setIsDark(newIsDark);
+
+    if (newIsDark) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
   };
 
   return (
-    <Dropdown
-      menu={{
-        items,
-        onClick: handleMenuClick,
-        selectable: true,
-        selectedKeys: [themeMode],
-      }}
-      trigger={["click"]}
-      onOpenChange={setOpen}
-      open={open}
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={toggleTheme}
+      className="text-white hover:text-white/80 hover:bg-white/10"
+      title={`Switch to ${isDark ? "light" : "dark"} mode`}
     >
-      <Button>
-        <Space>
-          {themeIcons[themeMode]}
-          {themeLabels[themeMode]}
-          <DownOutlined />
-        </Space>
-      </Button>
-    </Dropdown>
+      {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+    </Button>
   );
 };
 

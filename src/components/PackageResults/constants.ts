@@ -8,6 +8,6 @@ export const TABLE_COLUMN_WIDTHS = {
 } as const;
 
 export const BADGE_STYLE = {
-  backgroundColor: "#1890ff",
+  backgroundColor: "#15803d",
   fontSize: "12px",
 } as const;
