@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Card, Space, Flex, Divider } from "antd";
+import { Card, CardContent } from "@/components/ui/card";
 import semver from "semver";
 import { PackageResultsProps } from "./types";
 import { DEFAULT_PAGE_SIZE } from "./constants";
@@ -96,31 +96,33 @@ const PackageResults: React.FC<PackageResultsProps> = ({
   );
 
   return (
-    <Space direction="vertical" size="large" style={{ width: "100%" }}>
-      <Card style={{ width: "100%" }} variant="outlined">
-        <Flex vertical gap="small">
-          <PackageHeader
-            packageName={packageInfo.name}
-            description={packageInfo.description}
-            downloads={filteredTotalDownloads}
-            isFilterActive={isFilterActive}
-            filterCount={filteredVersions.length}
-            versionFilter={versionFilter}
-            onVersionFilterChange={onVersionFilterChange}
-          />
-
-          <Divider style={{ margin: "12px 0" }} />
-
-          <div style={{ width: "100%" }}>
-            <VersionsTable
-              versions={filteredVersions}
-              pageSize={pageSize}
-              onPageSizeChange={setPageSize}
+    <div className="space-y-6 w-full">
+      <Card className="w-full">
+        <CardContent className="p-6">
+          <div className="space-y-4">
+            <PackageHeader
+              packageName={packageInfo.name}
+              description={packageInfo.description}
+              downloads={filteredTotalDownloads}
+              isFilterActive={isFilterActive}
+              filterCount={filteredVersions.length}
+              versionFilter={versionFilter}
+              onVersionFilterChange={onVersionFilterChange}
             />
+
+            <hr className="border-t" />
+
+            <div className="w-full">
+              <VersionsTable
+                versions={filteredVersions}
+                pageSize={pageSize}
+                onPageSizeChange={setPageSize}
+              />
+            </div>
           </div>
-        </Flex>
+        </CardContent>
       </Card>
-    </Space>
+    </div>
   );
 };
 

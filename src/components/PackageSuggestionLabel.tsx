@@ -1,8 +1,5 @@
 import React from "react";
-import { Typography } from "antd";
 import { NpmPackageSuggestion } from "../services/npmAutocompleteService";
-
-const { Text } = Typography;
 
 interface PackageSuggestionLabelProps {
   package: NpmPackageSuggestion;
@@ -12,24 +9,15 @@ const PackageSuggestionLabel: React.FC<PackageSuggestionLabelProps> = ({
   package: pkg,
 }) => {
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Text strong>{pkg.name}</Text>
-        <Text type="secondary">{pkg.version}</Text>
+    <div className="flex flex-col">
+      <div className="flex items-center justify-between">
+        <span className="font-medium text-sm">{pkg.name}</span>
+        <span className="text-xs text-muted-foreground">v{pkg.version}</span>
       </div>
       {pkg.description && (
-        <Text
-          type="secondary"
-          style={{
-            fontSize: "12px",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            maxWidth: "100%",
-          }}
-        >
+        <span className="text-xs text-muted-foreground truncate mt-1">
           {pkg.description}
-        </Text>
+        </span>
       )}
     </div>
   );

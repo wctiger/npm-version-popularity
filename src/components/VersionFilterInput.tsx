@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Input, Button, Space, Tooltip } from "antd";
-import { FilterOutlined } from "@ant-design/icons";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Filter } from "lucide-react";
 
 // Version Filter Input Component interface
 interface VersionFilterInputProps {
   onVersionFilter: (filter: string) => void;
   versionFilter?: string;
   isLoading: boolean;
-  style?: React.CSSProperties;
 }
 
 const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
   onVersionFilter,
   versionFilter = "",
   isLoading,
-  style,
 }) => {
   const [inputValue, setInputValue] = useState(versionFilter);
 
@@ -43,29 +42,31 @@ const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
   };
 
   return (
-    <Space.Compact style={style}>
-      <Tooltip title="Enter semver range (e.g., ^3.0.0, ~2.1, >=4.0.0)">
+    <div className="flex gap-2 w-full">
+      <div className="relative flex-1">
         <Input
-          size="middle"
           placeholder="Version filter (e.g., ^3.0.0)"
           value={inputValue}
           onChange={handleFilterChange}
           onKeyDown={handleFilterKeyDown}
-          allowClear
-          onClear={handleClear}
           disabled={isLoading}
+          title="Enter semver range (e.g., ^3.0.0, ~2.1, >=4.0.0)"
         />
-      </Tooltip>
-      <Button
-        size="middle"
-        type="default"
-        icon={<FilterOutlined />}
-        onClick={applyFilter}
-        disabled={isLoading}
-      >
+        {inputValue && (
+          <button
+            onClick={handleClear}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            type="button"
+          >
+            ×
+          </button>
+        )}
+      </div>
+      <Button onClick={applyFilter} disabled={isLoading} variant="outline">
+        <Filter className="h-4 w-4 mr-2" />
         Filter
       </Button>
-    </Space.Compact>
+    </div>
   );
 };
 

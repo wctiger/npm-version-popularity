@@ -1,10 +1,7 @@
 import React from "react";
-import { Layout, Typography, Button } from "antd";
-import { GithubOutlined } from "@ant-design/icons";
+import { Button } from "@/components/ui/button";
+import { Github } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
-
-const { Header, Content, Footer } = Layout;
-const { Link } = Typography;
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -13,37 +10,40 @@ interface AppLayoutProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children, onLogoClick }) => {
   return (
-    <Layout style={{ width: "100%", minHeight: "100vh" }}>
-      <Header className="app-header">
-        <Link
-          className="app-logo"
+    <div className="min-h-screen w-full flex flex-col">
+      <header className="flex items-center justify-between px-6 py-4 bg-primary text-primary-foreground">
+        <button
           onClick={onLogoClick}
-          style={{ color: "white", cursor: "pointer" }}
+          className="text-xl font-bold text-primary-foreground hover:text-primary-foreground/80 cursor-pointer bg-transparent border-none"
         >
           NPM Version Popularity
-        </Link>
+        </button>
         <ThemeToggle />
-      </Header>
-      <Content className="app-content">
-        <div className="app-container">{children}</div>
-      </Content>
-      <Footer className="app-footer">
-        <div className="footer-content">
-          <span>NPM Version Popularity ©{new Date().getFullYear()}</span>
-          <Button
-            type="link"
-            href="https://github.com/wctiger/npm-version-popularity"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontSize: "14px" }}
-            icon={<GithubOutlined />}
-            aria-label="View on GitHub"
-          >
-            View on GitHub
+      </header>
+
+      <main className="flex-1 p-6 w-full">
+        <div className="max-w-7xl w-full mx-auto px-6">{children}</div>
+      </main>
+
+      <footer className="text-center w-full py-6 border-t bg-muted/50">
+        <div className="flex justify-center items-center gap-4">
+          <span className="text-sm text-muted-foreground">
+            NPM Version Popularity ©{new Date().getFullYear()}
+          </span>
+          <Button variant="link" size="sm" asChild className="text-sm">
+            <a
+              href="https://github.com/wctiger/npm-version-popularity"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <Github className="h-4 w-4" />
+              View on GitHub
+            </a>
           </Button>
         </div>
-      </Footer>
-    </Layout>
+      </footer>
+    </div>
   );
 };
 
