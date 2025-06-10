@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Download } from "lucide-react";
+import { Download, ExternalLink } from "lucide-react";
 import { PackageHeaderProps } from "./types";
 
 const PackageHeader: React.FC<PackageHeaderProps> = ({
@@ -18,7 +18,17 @@ const PackageHeader: React.FC<PackageHeaderProps> = ({
   return (
     <div className="flex items-center justify-between gap-6 flex-wrap">
       <div className="flex flex-col flex-1 min-w-[200px]">
-        <h3 className="text-2xl font-bold mb-1">{packageName}</h3>
+        <div className="flex items-center gap-2 mb-1">
+          <a
+            href={`https://www.npmjs.com/package/${packageName}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-2xl font-bold text-green-700 hover:text-green-800 dark:text-green-500 dark:hover:text-green-400 transition-colors flex items-center gap-1"
+          >
+            {packageName}
+            <ExternalLink className="h-4 w-4 " />
+          </a>
+        </div>
         {description && (
           <p
             className="text-muted-foreground text-sm truncate"
