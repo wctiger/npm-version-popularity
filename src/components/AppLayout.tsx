@@ -11,10 +11,10 @@ interface AppLayoutProps {
 const AppLayout: React.FC<AppLayoutProps> = ({ children, onLogoClick }) => {
   return (
     <div className="min-h-screen w-full flex flex-col bg-white dark:bg-gray-900">
-      <header className="flex items-center justify-between px-6 py-4 bg-blue-600 text-white">
+      <header className="flex items-center justify-between px-6 py-4 bg-green-700 text-white">
         <button
           onClick={onLogoClick}
-          className="text-xl font-bold text-white hover:text-blue-100 cursor-pointer bg-transparent border-none"
+          className="text-xl font-bold text-white hover:text-green-200 cursor-pointer bg-transparent border-none"
         >
           NPM Version Popularity
         </button>
@@ -37,7 +37,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, onLogoClick }) => {
               href="https://github.com/wctiger/npm-version-popularity"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-blue-600 dark:text-blue-400"
+              className="flex items-center gap-2 text-green-700 dark:text-green-500"
             >
               <Github className="h-4 w-4" />
               View on GitHub
