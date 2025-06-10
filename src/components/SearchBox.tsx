@@ -51,10 +51,12 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 
   return (
     <div className="flex flex-col items-center gap-6 p-8 w-full">
-      <Card className="w-full max-w-4xl shadow-lg">
+      <Card className="w-full max-w-4xl shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
         <CardHeader className="text-center pb-4">
-          <h2 className="text-3xl font-bold">NPM Version Popularity</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+            NPM Version Popularity
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
             Get information about package versions and their download counts
           </p>
         </CardHeader>

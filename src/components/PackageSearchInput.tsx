@@ -104,10 +104,10 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
             (packageSuggestions.length > 0 || fetchingSuggestions) && (
               <div
                 ref={suggestionsRef}
-                className="absolute top-full left-0 right-0 z-50 mt-1 bg-popover border rounded-md shadow-lg max-h-60 overflow-y-auto"
+                className="absolute top-full left-0 right-0 z-50 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-y-auto custom-scrollbar"
               >
                 {fetchingSuggestions && (
-                  <div className="flex items-center justify-center p-4 text-sm text-muted-foreground">
+                  <div className="flex items-center justify-center p-4 text-sm text-gray-600 dark:text-gray-400">
                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
                     Searching packages...
                   </div>
@@ -115,7 +115,7 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
                 {packageSuggestions.map((pkg) => (
                   <div
                     key={pkg.name}
-                    className="p-2 hover:bg-accent cursor-pointer border-b last:border-b-0"
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-200 dark:border-gray-700 last:border-b-0"
                     onClick={() => handleSuggestionClick(pkg.name)}
                   >
                     <PackageSuggestionLabel package={pkg} />

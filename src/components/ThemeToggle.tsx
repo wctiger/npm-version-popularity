@@ -5,10 +5,24 @@ import { Sun, Moon } from "lucide-react";
 const ThemeToggle: React.FC = () => {
   const [isDark, setIsDark] = useState(false);
 
+  // Initialize theme on mount
   useEffect(() => {
-    // Check if dark mode is enabled
-    const isDarkMode = document.documentElement.classList.contains("dark");
-    setIsDark(isDarkMode);
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    // Clear any existing classes first
+    document.documentElement.classList.remove("dark");
+
+    const shouldBeDark = savedTheme === "dark" || (!savedTheme && prefersDark);
+
+    if (shouldBeDark) {
+      document.documentElement.classList.add("dark");
+      setIsDark(true);
+    } else {
+      setIsDark(false);
+    }
   }, []);
 
   const toggleTheme = () => {
@@ -24,28 +38,13 @@ const ThemeToggle: React.FC = () => {
     }
   };
 
-  // Initialize theme on mount
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-
-    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
-      document.documentElement.classList.add("dark");
-      setIsDark(true);
-    } else {
-      document.documentElement.classList.remove("dark");
-      setIsDark(false);
-    }
-  }, []);
-
   return (
     <Button
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className="text-primary-foreground hover:text-primary-foreground/80 hover:bg-primary-foreground/10"
+      className="text-white hover:text-white/80 hover:bg-white/10"
+      title={`Switch to ${isDark ? "light" : "dark"} mode`}
     >
       {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </Button>

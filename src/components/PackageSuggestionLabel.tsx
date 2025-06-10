@@ -11,11 +11,15 @@ const PackageSuggestionLabel: React.FC<PackageSuggestionLabelProps> = ({
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between">
-        <span className="font-medium text-sm">{pkg.name}</span>
-        <span className="text-xs text-muted-foreground">v{pkg.version}</span>
+        <span className="font-medium text-sm text-gray-900 dark:text-gray-100">
+          {pkg.name}
+        </span>
+        <span className="text-xs text-gray-500 dark:text-gray-400">
+          v{pkg.version}
+        </span>
       </div>
       {pkg.description && (
-        <span className="text-xs text-muted-foreground truncate mt-1">
+        <span className="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">
           {pkg.description}
         </span>
       )}
