@@ -1,41 +1,58 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, Laptop } from "lucide-react";
+
+type Theme = "light" | "dark" | "system";
 
 const ThemeToggle: React.FC = () => {
-  const [isDark, setIsDark] = useState(false);
+  const [theme, setTheme] = useState<Theme>(
+    () => (localStorage.getItem("theme") as Theme) || "system"
+  );
 
-  // Initialize theme on mount
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
+    const root = window.document.documentElement;
+    root.classList.remove("light", "dark");
 
-    // Clear any existing classes first
-    document.documentElement.classList.remove("dark");
-
-    const shouldBeDark = savedTheme === "dark" || (!savedTheme && prefersDark);
-
-    if (shouldBeDark) {
-      document.documentElement.classList.add("dark");
-      setIsDark(true);
-    } else {
-      setIsDark(false);
+    if (theme === "system") {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+        .matches
+        ? "dark"
+        : "light";
+      root.classList.add(systemTheme);
+      return;
     }
-  }, []);
+
+    root.classList.add(theme);
+  }, [theme]);
+
+  useEffect(() => {
+    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+      if (theme === "system") {
+        const root = window.document.documentElement;
+        root.classList.remove("light", "dark");
+        root.classList.add(e.matches ? "dark" : "light");
+      }
+    };
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    mediaQuery.addEventListener("change", handleSystemThemeChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleSystemThemeChange);
+    };
+  }, [theme]);
 
   const toggleTheme = () => {
-    const newIsDark = !isDark;
-    setIsDark(newIsDark);
+    const newTheme =
+      theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
 
-    if (newIsDark) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
+  const getTitle = () => {
+    if (theme === "light") return "Switch to dark mode";
+    if (theme === "dark") return "Switch to system mode";
+    return "Switch to light mode";
   };
 
   return (
@@ -44,9 +61,11 @@ const ThemeToggle: React.FC = () => {
       size="icon"
       onClick={toggleTheme}
       className="text-white hover:text-white/80 hover:bg-white/10"
-      title={`Switch to ${isDark ? "light" : "dark"} mode`}
+      title={getTitle()}
     >
-      {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+      {theme === "light" && <Sun className="h-5 w-5" />}
+      {theme === "dark" && <Moon className="h-5 w-5" />}
+      {theme === "system" && <Laptop className="h-5 w-5" />}
     </Button>
   );
 };
