@@ -5,6 +5,7 @@ import { PackageResultsProps } from "./types";
 import { DEFAULT_PAGE_SIZE } from "./constants";
 import PackageHeader from "./PackageHeader";
 import VersionsTable from "./VersionsTable";
+import PopularityChart from "./PopularityChart";
 
 const PackageResults: React.FC<PackageResultsProps> = ({
   packageInfo,
@@ -112,12 +113,17 @@ const PackageResults: React.FC<PackageResultsProps> = ({
 
             <hr className="border-t" />
 
-            <div className="w-full">
-              <VersionsTable
-                versions={filteredVersions}
-                pageSize={pageSize}
-                onPageSizeChange={setPageSize}
-              />
+            <div className="flex flex-col lg:flex-row gap-6">
+              <div className="w-full lg:w-2/3">
+                <VersionsTable
+                  versions={filteredVersions}
+                  pageSize={pageSize}
+                  onPageSizeChange={setPageSize}
+                />
+              </div>
+              <div className="w-full lg:w-1/3">
+                <PopularityChart versions={filteredVersions} />
+              </div>
             </div>
           </div>
         </CardContent>
