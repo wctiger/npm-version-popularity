@@ -22,6 +22,23 @@ interface VersionsTableProps {
 type SortField = "version" | "date" | "downloads" | "percentage";
 type SortDirection = "asc" | "desc";
 
+const SortIcon = ({
+  field,
+  currentSortField,
+  sortDirection,
+}: {
+  field: SortField;
+  currentSortField: SortField;
+  sortDirection: SortDirection;
+}) => {
+  if (currentSortField !== field) return null;
+  return sortDirection === "asc" ? (
+    <ChevronUp className="h-4 w-4 ml-1" />
+  ) : (
+    <ChevronDown className="h-4 w-4 ml-1" />
+  );
+};
+
 const VersionsTable: React.FC<VersionsTableProps> = ({
   versions,
   pageSize,
@@ -65,15 +82,6 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
     }
   };
 
-  const SortIcon = ({ field }: { field: SortField }) => {
-    if (sortField !== field) return null;
-    return sortDirection === "asc" ? (
-      <ChevronUp className="h-4 w-4 ml-1" />
-    ) : (
-      <ChevronDown className="h-4 w-4 ml-1" />
-    );
-  };
-
   return (
     <div className="space-y-4">
       <Table>
@@ -85,7 +93,11 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
             >
               <div className="flex items-center">
                 Version
-                <SortIcon field="version" />
+                <SortIcon
+                  field="version"
+                  currentSortField={sortField}
+                  sortDirection={sortDirection}
+                />
               </div>
             </TableHead>
             <TableHead
@@ -94,7 +106,11 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
             >
               <div className="flex items-center">
                 Release Date
-                <SortIcon field="date" />
+                <SortIcon
+                  field="date"
+                  currentSortField={sortField}
+                  sortDirection={sortDirection}
+                />
               </div>
             </TableHead>
             <TableHead
@@ -103,7 +119,11 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
             >
               <div className="flex items-center">
                 Downloads
-                <SortIcon field="downloads" />
+                <SortIcon
+                  field="downloads"
+                  currentSortField={sortField}
+                  sortDirection={sortDirection}
+                />
               </div>
             </TableHead>
             <TableHead
@@ -112,7 +132,11 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
             >
               <div className="flex items-center">
                 Percent
-                <SortIcon field="percentage" />
+                <SortIcon
+                  field="percentage"
+                  currentSortField={sortField}
+                  sortDirection={sortDirection}
+                />
               </div>
             </TableHead>
           </TableRow>
