@@ -10,8 +10,8 @@ interface AppLayoutProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children, onLogoClick }) => {
   return (
-    <div className="min-h-screen w-full flex flex-col bg-white dark:bg-gray-900">
-      <header className="flex items-center justify-between px-6 py-4 bg-green-700 text-white">
+    <div className="h-screen w-full flex flex-col bg-white dark:bg-gray-900 overflow-hidden">
+      <header className="flex-none flex items-center justify-between px-6 py-4 bg-green-700 text-white">
         <button
           onClick={onLogoClick}
           className="text-xl font-bold text-white hover:text-green-200 cursor-pointer bg-transparent border-none"
@@ -21,8 +21,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, onLogoClick }) => {
         <ThemeToggle />
       </header>
 
-      <main className="flex-1 p-6 w-full">
-        <div className="max-w-7xl w-full mx-auto px-6 text-gray-900 dark:text-gray-100">
+      <main className="flex-1 w-full overflow-hidden flex flex-col">
+        <div className="max-w-7xl w-full mx-auto px-6 text-gray-900 dark:text-gray-100 h-full flex flex-col py-6">
           {children}
         </div>
       </main>

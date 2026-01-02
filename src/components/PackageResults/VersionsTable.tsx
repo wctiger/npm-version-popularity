@@ -83,97 +83,99 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
   };
 
   return (
-    <div className="space-y-4">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead
-              className="cursor-pointer hover:bg-muted/50"
-              onClick={() => handleSort("version")}
-            >
-              <div className="flex items-center">
-                Version
-                <SortIcon
-                  field="version"
-                  currentSortField={sortField}
-                  sortDirection={sortDirection}
-                />
-              </div>
-            </TableHead>
-            <TableHead
-              className="cursor-pointer hover:bg-muted/50"
-              onClick={() => handleSort("date")}
-            >
-              <div className="flex items-center">
-                Release Date
-                <SortIcon
-                  field="date"
-                  currentSortField={sortField}
-                  sortDirection={sortDirection}
-                />
-              </div>
-            </TableHead>
-            <TableHead
-              className="cursor-pointer hover:bg-muted/50"
-              onClick={() => handleSort("downloads")}
-            >
-              <div className="flex items-center">
-                Downloads
-                <SortIcon
-                  field="downloads"
-                  currentSortField={sortField}
-                  sortDirection={sortDirection}
-                />
-              </div>
-            </TableHead>
-            <TableHead
-              className="cursor-pointer hover:bg-muted/50"
-              onClick={() => handleSort("percentage")}
-            >
-              <div className="flex items-center">
-                Percent
-                <SortIcon
-                  field="percentage"
-                  currentSortField={sortField}
-                  sortDirection={sortDirection}
-                />
-              </div>
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {paginatedVersions.map((version, index) => (
-            <TableRow key={`${version.version}-${index}`}>
-              <TableCell>
-                <Badge variant="secondary">{version.version}</Badge>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center space-x-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span>{new Date(version.date).toLocaleDateString()}</span>
+    <div className="space-y-4 h-full flex flex-col min-h-0">
+      <div className="flex-1 overflow-auto">
+        <Table>
+          <TableHeader className="sticky top-0 bg-background z-10">
+            <TableRow>
+              <TableHead
+                className="cursor-pointer hover:bg-muted/50"
+                onClick={() => handleSort("version")}
+              >
+                <div className="flex items-center">
+                  Version
+                  <SortIcon
+                    field="version"
+                    currentSortField={sortField}
+                    sortDirection={sortDirection}
+                  />
                 </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center space-x-2">
-                  <Download className="h-4 w-4 text-muted-foreground" />
-                  <span>{version.downloads.toLocaleString()}</span>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer hover:bg-muted/50"
+                onClick={() => handleSort("date")}
+              >
+                <div className="flex items-center">
+                  Release Date
+                  <SortIcon
+                    field="date"
+                    currentSortField={sortField}
+                    sortDirection={sortDirection}
+                  />
                 </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center space-x-3">
-                  <span className="text-sm font-medium min-w-[3rem]">
-                    {version.percentage}%
-                  </span>
-                  <Progress value={version.percentage} className="w-16" />
+              </TableHead>
+              <TableHead
+                className="cursor-pointer hover:bg-muted/50"
+                onClick={() => handleSort("downloads")}
+              >
+                <div className="flex items-center">
+                  Downloads
+                  <SortIcon
+                    field="downloads"
+                    currentSortField={sortField}
+                    sortDirection={sortDirection}
+                  />
                 </div>
-              </TableCell>
+              </TableHead>
+              <TableHead
+                className="cursor-pointer hover:bg-muted/50"
+                onClick={() => handleSort("percentage")}
+              >
+                <div className="flex items-center">
+                  Percent
+                  <SortIcon
+                    field="percentage"
+                    currentSortField={sortField}
+                    sortDirection={sortDirection}
+                  />
+                </div>
+              </TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {paginatedVersions.map((version, index) => (
+              <TableRow key={`${version.version}-${index}`}>
+                <TableCell>
+                  <Badge variant="secondary">{version.version}</Badge>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center space-x-2">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <span>{new Date(version.date).toLocaleDateString()}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center space-x-2">
+                    <Download className="h-4 w-4 text-muted-foreground" />
+                    <span>{version.downloads.toLocaleString()}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-sm font-medium min-w-[3rem]">
+                      {version.percentage}%
+                    </span>
+                    <Progress value={version.percentage} className="w-16" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between">
+      <div className="flex-none flex items-center justify-between pt-2">
         <div className="flex items-center space-x-2">
           <span className="text-sm text-muted-foreground">Rows per page:</span>
           <select
@@ -184,7 +186,9 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
             }}
             className="border rounded px-2 py-1 text-sm"
           >
-            <option value={10}>10</option>
+            <option value={8}>8</option>
+            <option value={12}>12</option>
+            <option value={15}>15</option>
             <option value={20}>20</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
