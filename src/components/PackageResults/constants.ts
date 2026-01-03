@@ -1,4 +1,4 @@
-export const DEFAULT_PAGE_SIZE = 15;
+export const DEFAULT_PAGE_SIZE = 12;
 
 export const TABLE_COLUMN_WIDTHS = {
   version: "15%",

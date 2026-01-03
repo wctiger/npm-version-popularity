@@ -62,7 +62,11 @@ const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
           </button>
         )}
       </div>
-      <Button onClick={applyFilter} disabled={isLoading} variant="outline">
+      <Button
+        onClick={applyFilter}
+        disabled={isLoading}
+        variant={versionFilter ? "default" : "outline"}
+      >
         <Filter className="h-4 w-4 mr-2" />
         Filter
       </Button>

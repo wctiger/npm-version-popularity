@@ -5,6 +5,7 @@ import { PackageResultsProps } from "./types";
 import { DEFAULT_PAGE_SIZE } from "./constants";
 import PackageHeader from "./PackageHeader";
 import VersionsTable from "./VersionsTable";
+import PopularityChart from "./PopularityChart";
 
 const PackageResults: React.FC<PackageResultsProps> = ({
   packageInfo,
@@ -96,28 +97,35 @@ const PackageResults: React.FC<PackageResultsProps> = ({
   );
 
   return (
-    <div className="space-y-6 w-full">
-      <Card className="w-full">
-        <CardContent className="p-6">
-          <div className="space-y-4">
-            <PackageHeader
-              packageName={packageInfo.name}
-              description={packageInfo.description}
-              downloads={filteredTotalDownloads}
-              isFilterActive={isFilterActive}
-              filterCount={filteredVersions.length}
-              versionFilter={versionFilter}
-              onVersionFilterChange={onVersionFilterChange}
-            />
-
-            <hr className="border-t" />
-
-            <div className="w-full">
-              <VersionsTable
-                versions={filteredVersions}
-                pageSize={pageSize}
-                onPageSizeChange={setPageSize}
+    <div className="h-full w-full flex flex-col min-h-0">
+      <Card className="h-full flex flex-col border-none shadow-none">
+        <CardContent className="p-6 h-full flex flex-col min-h-0">
+          <div className="h-full flex flex-col space-y-4">
+            <div className="flex-none">
+              <PackageHeader
+                packageName={packageInfo.name}
+                description={packageInfo.description}
+                downloads={filteredTotalDownloads}
+                isFilterActive={isFilterActive}
+                filterCount={filteredVersions.length}
+                versionFilter={versionFilter}
+                onVersionFilterChange={onVersionFilterChange}
               />
+
+              <hr className="border-t mt-4" />
+            </div>
+
+            <div className="flex-1 min-h-0 flex flex-col lg:flex-row overflow-hidden">
+              <div className="w-full lg:w-2/3 h-full flex flex-col min-h-0 lg:border-r lg:pr-6">
+                <VersionsTable
+                  versions={filteredVersions}
+                  pageSize={pageSize}
+                  onPageSizeChange={setPageSize}
+                />
+              </div>
+              <div className="w-full lg:w-1/3 h-full lg:pl-6">
+                <PopularityChart versions={filteredVersions} />
+              </div>
             </div>
           </div>
         </CardContent>
