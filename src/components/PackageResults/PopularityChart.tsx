@@ -52,6 +52,8 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
   const data = useMemo(() => {
     // Sort by downloads descending
     const sorted = [...versions].sort((a, b) => b.downloads - a.downloads);
+    console.log("PopularityChart versions:", versions);
+    console.log("PopularityChart sorted:", sorted);
 
     if (sorted.length <= 9) {
       return sorted.map((v) => ({
