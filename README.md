@@ -1,25 +1,58 @@
-# npm Version Popularity
+# NPM Popular Version
 
-A web tool to analyze npm package version popularity based on download counts. This tool helps developers make informed decisions about which package versions to use in their projects.
+A modern, interactive web application to visualize and analyze the popularity of different versions of npm packages. Built with React, TypeScript, Vite, and Shadcn UI.
 
 ## Features
 
-- 📊 View download counts for all versions of any npm package
-- 🔍 Filter versions using semver ranges (e.g., "^1.0.0", "~2.0.0")
-- 📈 Compare version popularity through visual indicators
-- 🌗 Dark/Light theme support
+- **📦 Package Search**: Instantly search for any package available on the npm registry.
+- **📊 Version Popularity**: View detailed download statistics for each version of a package.
+- **📈 Visual Analytics**: Interactive Pie Chart visualization showing the distribution of downloads across versions.
+- **🔍 Semver Filtering**: Filter versions using standard semantic versioning ranges (e.g., `^1.0.0`, `>=2.0.0`, `1.x`).
+- **🔗 Deep Linking**: Shareable URLs that preserve your search query and filter state.
 
 ## Getting Started
 
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Start the development server: `npm start`
+### Prerequisites
 
-Visit [http://localhost:3000](http://localhost:3000) to view the application.
+- Node.js (v18 or higher)
+- npm or yarn
 
-## Built With
+### Installation
 
-- React
-- TypeScript
-- Ant Design
-- npm Registry API
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd npm-popular-version
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Development
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`.
+
+### Build
+
+Build the application for production:
+
+```bash
+npm run build
+```
+
+## Tech Stack
+
+- **Framework**: [React](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **UI Components**: [Shadcn UI](https://ui.shadcn.com/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Charts**: [Recharts](https://recharts.org/)
+- **Utilities**: [Semver](https://github.com/npm/node-semver), [Lodash](https://lodash.com/)
