@@ -13,17 +13,18 @@ interface PopularityChartProps {
   versions: VersionWithPercentage[];
 }
 
+// Modern indigo/violet palette with complementary colors
 const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#8884d8",
-  "#82ca9d",
-  "#ffc658",
-  "#8dd1e1",
-  "#a4de6c",
-  "#d0ed57",
+  "#6366f1", // indigo-500
+  "#8b5cf6", // violet-500
+  "#a855f7", // purple-500
+  "#ec4899", // pink-500
+  "#f43f5e", // rose-500
+  "#f97316", // orange-500
+  "#eab308", // yellow-500
+  "#22c55e", // green-500
+  "#14b8a6", // teal-500
+  "#06b6d4", // cyan-500
 ];
 
 const CustomTooltip = ({
@@ -52,8 +53,6 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
   const data = useMemo(() => {
     // Sort by downloads descending
     const sorted = [...versions].sort((a, b) => b.downloads - a.downloads);
-    console.log("PopularityChart versions:", versions);
-    console.log("PopularityChart sorted:", sorted);
 
     if (sorted.length <= 9) {
       return sorted.map((v) => ({
@@ -85,8 +84,8 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
 
   return (
     <div className="w-full h-full min-h-[300px] flex flex-col">
-      <h3 className="text-lg font-semibold mb-4 text-center flex-none">
-        Version Popularity
+      <h3 className="text-sm font-medium text-[var(--color-text-muted)] mb-4 text-center flex-none">
+        Version Distribution
       </h3>
       <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">

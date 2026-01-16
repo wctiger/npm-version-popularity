@@ -1,7 +1,6 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Download, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { PackageHeaderProps } from "./types";
 
 const PackageHeader: React.FC<PackageHeaderProps> = ({
@@ -10,7 +9,6 @@ const PackageHeader: React.FC<PackageHeaderProps> = ({
   downloads,
   isFilterActive,
   filterCount,
-  versionFilter,
   onVersionFilterChange,
 }) => {
   const formattedDownloads = downloads.toLocaleString();
@@ -18,20 +16,20 @@ const PackageHeader: React.FC<PackageHeaderProps> = ({
   return (
     <div className="flex items-center justify-between gap-6 flex-wrap">
       <div className="flex flex-col flex-1 min-w-[200px]">
-        <div className="flex items-center gap-2 mb-1">
+        <div className="flex items-center gap-2">
           <a
             href={`https://www.npmjs.com/package/${packageName}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-2xl font-bold text-green-700 hover:text-green-800 dark:text-green-500 dark:hover:text-green-400 transition-colors flex items-center gap-1"
+            className="text-xl font-semibold text-[var(--color-npm)] hover:text-[var(--color-npm-hover)] transition-colors flex items-center gap-1.5"
           >
             {packageName}
-            <ExternalLink className="h-4 w-4 " />
+            <ExternalLink className="h-3.5 w-3.5" />
           </a>
         </div>
         {description && (
           <p
-            className="text-muted-foreground text-sm truncate"
+            className="text-[var(--color-text-muted)] text-sm truncate mt-0.5"
             title={description}
           >
             {description}
@@ -39,42 +37,28 @@ const PackageHeader: React.FC<PackageHeaderProps> = ({
         )}
       </div>
 
-      <div className="flex flex-col items-end">
-        <div className="text-right mb-2">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-sm text-muted-foreground">
-              {isFilterActive
-                ? "Filtered Downloads (Last Week)"
-                : "Total Downloads (Last Week)"}
-            </span>
+      <div className="flex items-center gap-4">
+        <div className="text-right">
+          <div className="text-xs text-[var(--color-text-muted)] mb-0.5">
+            {isFilterActive ? "Filtered" : "Total"} Downloads (Last Week)
+          </div>
+          <div className="flex items-center justify-end gap-2">
+            <span className="text-xl font-semibold tabular-nums">{formattedDownloads}</span>
             {isFilterActive && (
-              <Badge variant="secondary" className="text-xs">
-                {filterCount}
+              <Badge variant="secondary" className="text-xs font-normal">
+                {filterCount} versions
               </Badge>
             )}
           </div>
-          <div className="flex items-center gap-2">
-            <Download className="h-5 w-5 text-muted-foreground" />
-            <span className="text-2xl font-bold">{formattedDownloads}</span>
-          </div>
         </div>
 
-        {isFilterActive && (
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-muted-foreground">
-              Filtered by: {versionFilter}
-            </span>
-            {onVersionFilterChange && (
-              <Button
-                variant="link"
-                size="sm"
-                onClick={() => onVersionFilterChange("")}
-                className="h-auto p-0 text-xs"
-              >
-                Clear
-              </Button>
-            )}
-          </div>
+        {isFilterActive && onVersionFilterChange && (
+          <button
+            onClick={() => onVersionFilterChange("")}
+            className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+          >
+            Clear filter
+          </button>
         )}
       </div>
     </div>

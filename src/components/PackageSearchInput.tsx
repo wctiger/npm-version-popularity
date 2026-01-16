@@ -5,7 +5,6 @@ import { Search, Loader2 } from "lucide-react";
 import { usePackageSuggestions } from "../hooks/usePackageSuggestions";
 import PackageSuggestionLabel from "./PackageSuggestionLabel";
 
-// Package Search Input Component interface
 interface PackageSearchInputProps {
   searchTerm: string;
   onSearchTermChange: (value: string) => void;
@@ -78,7 +77,7 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
   }, []);
 
   const inputHeight = size === "large" ? "h-12" : "h-9";
-  const buttonHeight = size === "large" ? "h-12" : "h-9";
+  const buttonHeight = size === "large" ? "h-12 px-5" : "h-9";
 
   return (
     <div className="relative w-full">
@@ -90,32 +89,26 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
             onChange={handleLocalInputChange}
             onKeyDown={handleKeyDown}
             onFocus={() => searchTerm.length > 0 && setShowSuggestions(true)}
-            placeholder={
-              size === "large"
-                ? "Enter package name (e.g., react, lodash, axios)"
-                : "Enter package name"
-            }
+            placeholder="Search packages..."
             disabled={isLoading}
-            className={inputHeight}
+            className={`${inputHeight} ${size === "large" ? "text-base" : ""}`}
           />
-
-          {/* Suggestions dropdown */}
           {showSuggestions &&
             (packageSuggestions.length > 0 || fetchingSuggestions) && (
               <div
                 ref={suggestionsRef}
-                className="absolute top-full left-0 right-0 z-50 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-y-auto custom-scrollbar"
+                className="absolute top-full left-0 right-0 z-50 mt-1.5 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg shadow-lg max-h-60 overflow-y-auto custom-scrollbar"
               >
                 {fetchingSuggestions && (
-                  <div className="flex items-center justify-center p-4 text-sm text-gray-600 dark:text-gray-400">
+                  <div className="flex items-center justify-center p-4 text-sm text-[var(--color-text-muted)]">
                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                    Searching packages...
+                    Searching...
                   </div>
                 )}
                 {packageSuggestions.map((pkg) => (
                   <div
                     key={pkg.name}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-200 dark:border-gray-700 last:border-b-0"
+                    className="p-2.5 hover:bg-[var(--color-bg-subtle)] cursor-pointer border-b border-[var(--color-border-subtle)] last:border-b-0 transition-colors"
                     onClick={() => handleSuggestionClick(pkg.name)}
                   >
                     <PackageSuggestionLabel package={pkg} />
@@ -131,15 +124,9 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
           className={buttonHeight}
         >
           {isLoading ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
-              Searching...
-            </>
+            <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
-            <>
-              <Search className="h-4 w-4 mr-2" />
-              Search
-            </>
+            <Search className="h-4 w-4" />
           )}
         </Button>
       </div>
