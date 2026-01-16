@@ -60,7 +60,7 @@ const ThemeToggle: React.FC = () => {
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className="text-white hover:text-white/80 hover:bg-white/10"
+      className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-subtle)]"
       title={getTitle()}
     >
       {theme === "light" && <Sun className="h-5 w-5" />}

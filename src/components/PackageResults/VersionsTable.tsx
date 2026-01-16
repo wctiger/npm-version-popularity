@@ -7,10 +7,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Calendar, Download, ChevronUp, ChevronDown } from "lucide-react";
+import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { VersionWithPercentage } from "./types";
 
 interface VersionsTableProps {
@@ -84,7 +83,7 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
 
   return (
     <div className="space-y-4 h-full flex flex-col min-h-0">
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1">
         <Table>
           <TableHeader className="sticky top-0 bg-background z-10">
             <TableRow>
@@ -144,25 +143,21 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
           </TableHeader>
           <TableBody>
             {paginatedVersions.map((version, index) => (
-              <TableRow key={`${version.version}-${index}`}>
-                <TableCell>
-                  <Badge variant="secondary">{version.version}</Badge>
+              <TableRow key={`${version.version}-${index}`} className="border-[var(--color-border-subtle)]">
+                <TableCell className="py-2.5">
+                  <Badge variant="secondary" className="font-mono text-xs">
+                    {version.version}
+                  </Badge>
                 </TableCell>
-                <TableCell>
-                  <div className="flex items-center space-x-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span>{new Date(version.date).toLocaleDateString()}</span>
-                  </div>
+                <TableCell className="py-2.5 text-[var(--color-text-muted)] tabular-nums">
+                  {new Date(version.date).toLocaleDateString()}
                 </TableCell>
-                <TableCell>
-                  <div className="flex items-center space-x-2">
-                    <Download className="h-4 w-4 text-muted-foreground" />
-                    <span>{version.downloads.toLocaleString()}</span>
-                  </div>
+                <TableCell className="py-2.5 tabular-nums">
+                  {version.downloads.toLocaleString()}
                 </TableCell>
-                <TableCell>
-                  <div className="flex items-center space-x-3">
-                    <span className="text-sm font-medium min-w-[3rem]">
+                <TableCell className="py-2.5">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm tabular-nums min-w-[3rem]">
                       {version.percentage}%
                     </span>
                     <Progress value={version.percentage} className="w-16" />
@@ -173,18 +168,16 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
           </TableBody>
         </Table>
       </div>
-
-      {/* Pagination */}
-      <div className="flex-none flex items-center justify-between pt-2">
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-muted-foreground">Rows per page:</span>
+      <div className="flex-none flex items-center justify-between pt-3 border-t border-[var(--color-border-subtle)]">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-[var(--color-text-muted)]">Rows</span>
           <select
             value={pageSize}
             onChange={(e) => {
               onPageSizeChange(Number(e.target.value));
               setCurrentPage(1);
             }}
-            className="border rounded px-2 py-1 text-sm"
+            className="h-8 px-2 text-xs border border-[var(--color-border)] rounded-md bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
           >
             <option value={8}>8</option>
             <option value={12}>12</option>
@@ -195,31 +188,25 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
           </select>
         </div>
 
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-muted-foreground">
-            {startIndex + 1}-
-            {Math.min(startIndex + pageSize, sortedVersions.length)} of{" "}
-            {sortedVersions.length}
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-[var(--color-text-muted)] tabular-nums">
+            {startIndex + 1}–{Math.min(startIndex + pageSize, sortedVersions.length)} of {sortedVersions.length}
           </span>
-          <div className="flex space-x-1">
-            <Button
-              variant="outline"
-              size="sm"
+          <div className="flex gap-1">
+            <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
+              className="h-8 w-8 flex items-center justify-center rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text)] disabled:opacity-40 disabled:pointer-events-none transition-colors"
             >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                setCurrentPage(Math.min(totalPages, currentPage + 1))
-              }
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
+              className="h-8 w-8 flex items-center justify-center rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text)] disabled:opacity-40 disabled:pointer-events-none transition-colors"
             >
-              Next
-            </Button>
+              <ChevronRight className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </div>

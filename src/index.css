@@ -2,6 +2,47 @@
 
 @variant dark (.dark &);
 
+/* Modern color palette - Indigo/Violet accent */
+:root {
+  --color-primary: #6366f1;
+  --color-primary-hover: #4f46e5;
+  --color-primary-light: #818cf8;
+  --color-primary-dark: #4338ca;
+
+  /* Neutrals - Cool slate grays */
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f8fafc;
+  --color-border: #e2e8f0;
+  --color-border-subtle: #f1f5f9;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-text-subtle: #94a3b8;
+
+  /* npm green - kept for external links */
+  --color-npm: #22c55e;
+  --color-npm-hover: #16a34a;
+}
+
+.dark {
+  --color-primary: #818cf8;
+  --color-primary-hover: #a5b4fc;
+  --color-primary-light: #a5b4fc;
+  --color-primary-dark: #6366f1;
+
+  /* Dark mode neutrals */
+  --color-bg: #0f172a;
+  --color-bg-subtle: #1e293b;
+  --color-border: #334155;
+  --color-border-subtle: #1e293b;
+  --color-text: #f8fafc;
+  --color-text-muted: #94a3b8;
+  --color-text-subtle: #64748b;
+
+  /* npm green - dark mode */
+  --color-npm: #4ade80;
+  --color-npm-hover: #22c55e;
+}
+
 body {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -9,45 +50,30 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 /* Custom scrollbar styling */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f5f9;
+  scrollbar-color: var(--color-border) var(--color-bg-subtle);
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 3px;
+  background: var(--color-bg-subtle);
+  border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
+  background: var(--color-border);
+  border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-/* Dark mode scrollbar */
-.dark .custom-scrollbar {
-  scrollbar-color: #4b5563 #374151;
-}
-
-.dark .custom-scrollbar::-webkit-scrollbar-track {
-  background: #374151;
-}
-
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #4b5563;
-}
-
-.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+  background: var(--color-text-subtle);
 }
