@@ -7,13 +7,13 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import semver from "semver";
 import { VersionWithPercentage } from "./types";
 
-interface PopularityChartProps {
+interface MajorVersionChartProps {
   versions: VersionWithPercentage[];
 }
 
-// Modern indigo/violet palette with complementary colors
 const COLORS = [
   "#6366f1", // indigo-500
   "#8b5cf6", // violet-500
@@ -49,31 +49,48 @@ const CustomTooltip = ({
   return null;
 };
 
-const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
+const MajorVersionChart: React.FC<MajorVersionChartProps> = ({ versions }) => {
   const data = useMemo(() => {
-    // Sort by downloads descending
-    const sorted = [...versions].sort((a, b) => b.downloads - a.downloads);
+    const majorMap = new Map<number, { downloads: number; percentage: number }>();
+
+    for (const v of versions) {
+      try {
+        const major = semver.major(v.version);
+        const existing = majorMap.get(major);
+        if (existing) {
+          existing.downloads += v.downloads;
+          existing.percentage += v.percentage;
+        } else {
+          majorMap.set(major, {
+            downloads: v.downloads,
+            percentage: v.percentage,
+          });
+        }
+      } catch {
+        // skip versions that semver cannot parse
+      }
+    }
+
+    const sorted = Array.from(majorMap.entries())
+      .map(([major, { downloads, percentage }]) => ({
+        name: `^${major}`,
+        value: downloads,
+        percentage: parseFloat(percentage.toFixed(2)),
+      }))
+      .sort((a, b) => b.value - a.value);
 
     if (sorted.length <= 9) {
-      return sorted.map((v) => ({
-        name: v.version,
-        value: v.downloads,
-        percentage: v.percentage,
-      }));
+      return sorted;
     }
 
     const top9 = sorted.slice(0, 9);
     const others = sorted.slice(9);
 
-    const othersDownloads = others.reduce((sum, v) => sum + v.downloads, 0);
+    const othersDownloads = others.reduce((sum, v) => sum + v.value, 0);
     const othersPercentage = others.reduce((sum, v) => sum + v.percentage, 0);
 
     return [
-      ...top9.map((v) => ({
-        name: v.version,
-        value: v.downloads,
-        percentage: v.percentage,
-      })),
+      ...top9,
       {
         name: "Others",
         value: othersDownloads,
@@ -85,7 +102,7 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
   return (
     <div className="w-full min-h-[300px] flex flex-col">
       <h3 className="text-sm font-medium text-[var(--color-text-muted)] mb-4 text-center flex-none">
-        Version Distribution
+        Major Version Distribution
       </h3>
       <div className="flex-1 min-h-0" style={{ height: "260px" }}>
         <ResponsiveContainer width="100%" height="100%">
@@ -95,7 +112,7 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
               cx="50%"
               cy="50%"
               labelLine={false}
-              outerRadius={120}
+              outerRadius={100}
               fill="#8884d8"
               dataKey="value"
             >
@@ -115,4 +132,4 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
   );
 };
 
-export default PopularityChart;
+export default MajorVersionChart;

@@ -6,6 +6,7 @@ import { DEFAULT_PAGE_SIZE } from "./constants";
 import PackageHeader from "./PackageHeader";
 import VersionsTable from "./VersionsTable";
 import PopularityChart from "./PopularityChart";
+import MajorVersionChart from "./MajorVersionChart";
 
 const PackageResults: React.FC<PackageResultsProps> = ({
   packageInfo,
@@ -123,8 +124,11 @@ const PackageResults: React.FC<PackageResultsProps> = ({
                   onPageSizeChange={setPageSize}
                 />
               </div>
-              <div className="w-full lg:w-1/3 h-full lg:pl-6">
-                <PopularityChart versions={filteredVersions} />
+              <div className="w-full lg:w-1/3 lg:pl-6 lg:overflow-y-auto">
+                <div className="flex flex-col gap-8">
+                  <PopularityChart versions={filteredVersions} />
+                  <MajorVersionChart versions={filteredVersions} />
+                </div>
               </div>
             </div>
           </div>
