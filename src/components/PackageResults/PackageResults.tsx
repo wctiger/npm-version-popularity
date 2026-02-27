@@ -6,6 +6,7 @@ import { DEFAULT_PAGE_SIZE } from "./constants";
 import PackageHeader from "./PackageHeader";
 import VersionsTable from "./VersionsTable";
 import PopularityChart from "./PopularityChart";
+import MajorVersionChart from "./MajorVersionChart";
 
 const PackageResults: React.FC<PackageResultsProps> = ({
   packageInfo,
@@ -115,16 +116,19 @@ const PackageResults: React.FC<PackageResultsProps> = ({
               <hr className="border-t mt-4" />
             </div>
 
-            <div className="flex-1 min-h-0 flex flex-col lg:flex-row overflow-hidden">
-              <div className="w-full lg:w-2/3 h-full flex flex-col min-h-0 lg:border-r lg:pr-6">
+            <div className="flex flex-col lg:flex-row">
+              <div className="w-full lg:w-2/3 lg:border-r lg:pr-6">
                 <VersionsTable
                   versions={filteredVersions}
                   pageSize={pageSize}
                   onPageSizeChange={setPageSize}
                 />
               </div>
-              <div className="w-full lg:w-1/3 h-full lg:pl-6">
-                <PopularityChart versions={filteredVersions} />
+              <div className="w-full lg:w-1/3 lg:pl-6">
+                <div className="flex flex-col gap-8">
+                  <PopularityChart versions={filteredVersions} />
+                  <MajorVersionChart versions={filteredVersions} />
+                </div>
               </div>
             </div>
           </div>

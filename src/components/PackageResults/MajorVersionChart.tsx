@@ -6,24 +6,24 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import semver from "semver";
 import { VersionWithPercentage } from "./types";
 
-interface PopularityChartProps {
+interface MajorVersionChartProps {
   versions: VersionWithPercentage[];
 }
 
-// Modern indigo/violet palette with complementary colors
 const COLORS = [
-  "#6366f1", // indigo-500
-  "#8b5cf6", // violet-500
-  "#a855f7", // purple-500
-  "#ec4899", // pink-500
-  "#f43f5e", // rose-500
+  "#3b82f6", // blue-500
   "#f97316", // orange-500
-  "#eab308", // yellow-500
   "#22c55e", // green-500
-  "#14b8a6", // teal-500
+  "#ef4444", // red-500
+  "#eab308", // yellow-500
+  "#8b5cf6", // violet-500
   "#06b6d4", // cyan-500
+  "#ec4899", // pink-500
+  "#84cc16", // lime-500
+  "#f59e0b", // amber-500
 ];
 
 const CustomTooltip = ({
@@ -48,31 +48,48 @@ const CustomTooltip = ({
   return null;
 };
 
-const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
+const MajorVersionChart: React.FC<MajorVersionChartProps> = ({ versions }) => {
   const data = useMemo(() => {
-    // Sort by downloads descending
-    const sorted = [...versions].sort((a, b) => b.downloads - a.downloads);
+    const majorMap = new Map<number, { downloads: number; percentage: number }>();
+
+    for (const v of versions) {
+      try {
+        const major = semver.major(v.version);
+        const existing = majorMap.get(major);
+        if (existing) {
+          existing.downloads += v.downloads;
+          existing.percentage += v.percentage;
+        } else {
+          majorMap.set(major, {
+            downloads: v.downloads,
+            percentage: v.percentage,
+          });
+        }
+      } catch {
+        // skip versions that semver cannot parse
+      }
+    }
+
+    const sorted = Array.from(majorMap.entries())
+      .map(([major, { downloads, percentage }]) => ({
+        name: `^${major}`,
+        value: downloads,
+        percentage: parseFloat(percentage.toFixed(2)),
+      }))
+      .sort((a, b) => b.value - a.value);
 
     if (sorted.length <= 9) {
-      return sorted.map((v) => ({
-        name: v.version,
-        value: v.downloads,
-        percentage: v.percentage,
-      }));
+      return sorted;
     }
 
     const top9 = sorted.slice(0, 9);
     const others = sorted.slice(9);
 
-    const othersDownloads = others.reduce((sum, v) => sum + v.downloads, 0);
+    const othersDownloads = others.reduce((sum, v) => sum + v.value, 0);
     const othersPercentage = others.reduce((sum, v) => sum + v.percentage, 0);
 
     return [
-      ...top9.map((v) => ({
-        name: v.version,
-        value: v.downloads,
-        percentage: v.percentage,
-      })),
+      ...top9,
       {
         name: "Others",
         value: othersDownloads,
@@ -84,7 +101,7 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
   return (
     <div className="w-full flex flex-col gap-3">
       <h3 className="text-sm font-medium text-[var(--color-text-muted)] text-center">
-        Version Distribution
+        Major Version Distribution
       </h3>
       <div style={{ height: 220 }}>
         <ResponsiveContainer width="100%" height="100%" minWidth={0}>
@@ -124,4 +141,4 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
   );
 };
 
-export default PopularityChart;
+export default MajorVersionChart;
