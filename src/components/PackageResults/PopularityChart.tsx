@@ -4,7 +4,6 @@ import {
   Pie,
   Cell,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { VersionWithPercentage } from "./types";
@@ -83,19 +82,19 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
   }, [versions]);
 
   return (
-    <div className="w-full min-h-[300px] flex flex-col">
-      <h3 className="text-sm font-medium text-[var(--color-text-muted)] mb-4 text-center flex-none">
+    <div className="w-full flex flex-col gap-3">
+      <h3 className="text-sm font-medium text-[var(--color-text-muted)] text-center">
         Version Distribution
       </h3>
-      <div className="flex-1 min-h-0" style={{ height: "260px" }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <div style={{ height: 220 }}>
+        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
           <PieChart>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
               labelLine={false}
-              outerRadius={120}
+              outerRadius={90}
               fill="#8884d8"
               dataKey="value"
             >
@@ -107,9 +106,19 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
               ))}
             </Pie>
             <Tooltip content={<CustomTooltip />} />
-            <Legend />
           </PieChart>
         </ResponsiveContainer>
+      </div>
+      <div className="flex flex-wrap gap-x-3 gap-y-1.5 justify-center">
+        {data.map((entry, index) => (
+          <div key={entry.name} className="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]">
+            <span
+              className="w-2.5 h-2.5 rounded-sm flex-none"
+              style={{ backgroundColor: COLORS[index % COLORS.length] }}
+            />
+            <span>{entry.name}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
