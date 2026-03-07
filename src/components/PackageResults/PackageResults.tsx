@@ -98,10 +98,10 @@ const PackageResults: React.FC<PackageResultsProps> = ({
   );
 
   return (
-    <div className="h-full w-full flex flex-col min-h-0">
-      <Card className="h-full flex flex-col border-none shadow-none">
-        <CardContent className="p-6 h-full flex flex-col min-h-0">
-          <div className="h-full flex flex-col space-y-4">
+    <div className="w-full flex flex-col">
+      <Card className="flex flex-col border-none shadow-none">
+        <CardContent className="p-6 flex flex-col">
+          <div className="flex flex-col space-y-4">
             <div className="flex-none">
               <PackageHeader
                 packageName={packageInfo.name}
@@ -124,7 +124,7 @@ const PackageResults: React.FC<PackageResultsProps> = ({
                   onPageSizeChange={setPageSize}
                 />
               </div>
-              <div className="w-full lg:w-1/3 lg:pl-6">
+              <div className="w-full lg:w-1/3 lg:pl-6 mt-6 lg:mt-0">
                 <div className="flex flex-col gap-8">
                   <PopularityChart versions={filteredVersions} />
                   <MajorVersionChart versions={filteredVersions} />

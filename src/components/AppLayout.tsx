@@ -9,7 +9,7 @@ interface AppLayoutProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children, onLogoClick }) => {
   return (
-    <div className="h-screen w-full flex flex-col bg-[var(--color-bg)] overflow-hidden">
+    <div className="h-screen w-full flex flex-col bg-[var(--color-bg)]">
       <header className="flex-none flex items-center justify-between px-6 py-3 border-b border-[var(--color-border)]">
         <button
           onClick={onLogoClick}
@@ -20,8 +20,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, onLogoClick }) => {
         <ThemeToggle />
       </header>
 
-      <main className="flex-1 w-full overflow-hidden flex flex-col">
-        <div className="max-w-7xl w-full mx-auto px-6 text-[var(--color-text)] h-full flex flex-col py-6">
+      <main className="flex-1 w-full overflow-auto flex flex-col custom-scrollbar">
+        <div className="max-w-7xl w-full mx-auto px-6 text-[var(--color-text)] flex-1 flex flex-col py-6">
           {children}
         </div>
       </main>
