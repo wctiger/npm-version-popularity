@@ -82,7 +82,7 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
   };
 
   return (
-    <div className="space-y-4 h-full flex flex-col min-h-0">
+    <div className="space-y-4 flex flex-col">
       <div className="flex-1">
         <Table>
           <TableHeader className="sticky top-0 bg-background z-10">
