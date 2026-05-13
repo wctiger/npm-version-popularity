@@ -4,6 +4,8 @@ export interface PackageResultsProps {
   packageInfo: PackageInfo;
   versionFilter?: string;
   onVersionFilterChange?: (filter: string) => void;
+  formalOnly?: boolean;
+  onFormalOnlyChange?: (formalOnly: boolean) => void;
 }
 
 export interface VersionWithPercentage extends PackageVersion {
@@ -18,4 +20,6 @@ export interface PackageHeaderProps {
   filterCount: number;
   versionFilter: string;
   onVersionFilterChange?: (filter: string) => void;
+  formalOnly?: boolean;
+  onFormalOnlyChange?: (formalOnly: boolean) => void;
 }
