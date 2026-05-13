@@ -11,7 +11,7 @@ const AppContent: React.FC = () => {
   const { params, setParam, resetParams } = useSearchParams({
     q: "",
     filter: "",
-    formal: false,
+    formal: true,
   });
 
   const {
