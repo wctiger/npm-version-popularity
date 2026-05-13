@@ -10,6 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import semver from "semver";
 import { VersionWithPercentage } from "./types";
 
 interface VersionsTableProps {
@@ -49,19 +50,29 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
 
   // Sort versions
   const sortedVersions = [...versions].sort((a, b) => {
-    let aValue: string | number = a[sortField];
-    let bValue: string | number = b[sortField];
+    let cmp: number;
 
-    if (sortField === "date") {
-      aValue = new Date(aValue as string).getTime();
-      bValue = new Date(bValue as string).getTime();
-    }
-
-    if (sortDirection === "asc") {
-      return aValue > bValue ? 1 : -1;
+    if (sortField === "version") {
+      const aValid = semver.valid(a.version);
+      const bValid = semver.valid(b.version);
+      if (aValid && bValid) {
+        cmp = semver.compare(aValid, bValid);
+      } else if (aValid) {
+        cmp = 1;
+      } else if (bValid) {
+        cmp = -1;
+      } else {
+        cmp = a.version.localeCompare(b.version);
+      }
+    } else if (sortField === "date") {
+      cmp = new Date(a.date).getTime() - new Date(b.date).getTime();
     } else {
-      return aValue < bValue ? 1 : -1;
+      const aValue = a[sortField] as number;
+      const bValue = b[sortField] as number;
+      cmp = aValue - bValue;
     }
+
+    return sortDirection === "asc" ? cmp : -cmp;
   });
 
   // Paginate versions
