@@ -12,14 +12,22 @@ const PackageResults: React.FC<PackageResultsProps> = ({
   packageInfo,
   versionFilter = "",
   onVersionFilterChange,
+  formalOnly = false,
+  onFormalOnlyChange,
 }) => {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
   // Apply semver filter to versions
   const filteredVersions = useMemo(() => {
-    const versionsWithDownloads = packageInfo.versions.filter(
+    let versionsWithDownloads = packageInfo.versions.filter(
       (version) => version.downloads > 0
     );
+
+    if (formalOnly) {
+      versionsWithDownloads = versionsWithDownloads.filter(
+        (v) => semver.valid(v.version) && semver.prerelease(v.version) === null
+      );
+    }
 
     if (!versionFilter) {
       return versionsWithDownloads.map((version) => {
@@ -94,7 +102,8 @@ const PackageResults: React.FC<PackageResultsProps> = ({
 
   // Determine if filter is active
   const isFilterActive = Boolean(
-    versionFilter && filteredVersions.length !== packageInfo.versions.length
+    (versionFilter || formalOnly) &&
+      filteredVersions.length !== packageInfo.versions.length
   );
 
   return (
@@ -111,6 +120,8 @@ const PackageResults: React.FC<PackageResultsProps> = ({
                 filterCount={filteredVersions.length}
                 versionFilter={versionFilter}
                 onVersionFilterChange={onVersionFilterChange}
+                formalOnly={formalOnly}
+                onFormalOnlyChange={onFormalOnlyChange}
               />
 
               <hr className="border-t mt-4" />

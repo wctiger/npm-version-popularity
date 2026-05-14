@@ -11,6 +11,7 @@ const AppContent: React.FC = () => {
   const { params, setParam, resetParams } = useSearchParams({
     q: "",
     filter: "",
+    formal: true,
   });
 
   const {
@@ -53,6 +54,11 @@ const AppContent: React.FC = () => {
     setParam("filter", filter);
   };
 
+  // Handle formal-only toggle
+  const handleFormalOnlyChange = (formalOnly: boolean) => {
+    setParam("formal", formalOnly);
+  };
+
   // Handle logo click to reset the app to home state
   const handleLogoClick = () => {
     resetSearch();
@@ -79,6 +85,8 @@ const AppContent: React.FC = () => {
           packageInfo={packageInfo}
           versionFilter={params.filter}
           onVersionFilterChange={handleVersionFilterChange}
+          formalOnly={params.formal}
+          onFormalOnlyChange={handleFormalOnlyChange}
         />
       );
     }
@@ -101,6 +109,8 @@ const AppContent: React.FC = () => {
         isCompact={showCompactSearch}
         onVersionFilter={packageInfo ? handleVersionFilterChange : undefined}
         versionFilter={params.filter}
+        formalOnly={params.formal}
+        onFormalOnlyChange={packageInfo ? handleFormalOnlyChange : undefined}
       />
       {renderContent()}
     </AppLayout>
