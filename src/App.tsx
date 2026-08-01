@@ -22,6 +22,7 @@ const AppContent: React.FC = () => {
     searchTerm,
     setSearchTerm,
     searchPackage,
+    resetSearch,
     loading,
     error,
     packageInfo,
@@ -65,6 +66,7 @@ const AppContent: React.FC = () => {
   // Handle logo click to reset the app to home state
   const handleLogoClick = () => {
     setSearchTerm("");
+    resetSearch();
     resetParams();
   };
 
@@ -75,7 +77,8 @@ const AppContent: React.FC = () => {
           errorMessage={error}
           onReset={() => {
             setSearchTerm("");
-            setParam("q", "");
+            resetSearch();
+            resetParams();
           }}
         />
       );

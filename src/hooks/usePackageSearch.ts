@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { fetchPackageInfo, PackageInfo } from "../services/npmService";
 
 interface PackageSearchState {
@@ -9,6 +9,7 @@ interface PackageSearchState {
 }
 
 export const usePackageSearch = () => {
+  const requestIdRef = useRef(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [state, setState] = useState<PackageSearchState>({
     loading: false,
@@ -17,7 +18,9 @@ export const usePackageSearch = () => {
     hasSearched: false,
   });
 
-  const searchPackage = async (packageName: string) => {
+  const searchPackage = useCallback(async (packageName: string) => {
+    const requestId = ++requestIdRef.current;
+
     if (!packageName.trim()) {
       setState({
         loading: false,
@@ -37,6 +40,8 @@ export const usePackageSearch = () => {
 
     try {
       const packageInfo = await fetchPackageInfo(packageName);
+      if (requestId !== requestIdRef.current) return;
+
       setState({
         loading: false,
         error: null,
@@ -44,6 +49,8 @@ export const usePackageSearch = () => {
         hasSearched: true,
       });
     } catch (error) {
+      if (requestId !== requestIdRef.current) return;
+
       setState({
         loading: false,
         error:
@@ -54,17 +61,19 @@ export const usePackageSearch = () => {
         hasSearched: true,
       });
     }
-  };
+  }, []);
 
   // Reset the search state to default values
-  const resetSearch = () => {
+  const resetSearch = useCallback(() => {
+    // Invalidate pending requests so they cannot restore stale results.
+    requestIdRef.current += 1;
     setState({
       loading: false,
       error: null,
       packageInfo: null,
       hasSearched: false,
     });
-  };
+  }, []);
 
   return {
     searchTerm,
