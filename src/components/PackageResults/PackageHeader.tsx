@@ -9,59 +9,47 @@ const PackageHeader: React.FC<PackageHeaderProps> = ({
   downloads,
   isFilterActive,
   filterCount,
-  onVersionFilterChange,
 }) => {
-  const formattedDownloads = downloads.toLocaleString();
-
   return (
-    <div className="flex items-center justify-between gap-6 flex-wrap">
-      <div className="flex flex-col flex-1 min-w-[200px]">
-        <div className="flex items-center gap-2">
-          <a
-            href={`https://www.npmjs.com/package/${packageName}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xl font-semibold text-[var(--color-npm)] hover:text-[var(--color-npm-hover)] transition-colors flex items-center gap-1.5"
-          >
-            {packageName}
-            <ExternalLink className="h-3.5 w-3.5" />
-          </a>
+    <header className="grid gap-8 pt-6 pb-10 md:grid-cols-[minmax(0,1.45fr)_minmax(260px,0.55fr)] md:items-end md:pt-8 md:pb-12">
+      <div>
+        <div className="eyebrow mb-5">Package signal</div>
+        <div className="flex flex-col items-start gap-5">
+          <div>
+            <a
+              href={`https://npmx.dev/package/${packageName}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex max-w-full items-start gap-3 text-[var(--color-text-primary)] no-underline transition-colors hover:text-[var(--color-text-brand)]"
+            >
+              <h1 className="m-0 overflow-hidden text-ellipsis text-[clamp(3rem,7vw,6.5rem)] leading-[0.94] tracking-[-0.065em]">
+                {packageName}
+              </h1>
+              <ExternalLink className="mt-2 h-5 w-5 shrink-0 md:mt-3" />
+            </a>
+          </div>
+          {description && (
+            <p className="m-0 max-w-2xl text-base leading-relaxed text-[var(--color-text-secondary)]">
+              {description}
+            </p>
+          )}
         </div>
-        {description && (
-          <p
-            className="text-[var(--color-text-muted)] text-sm truncate mt-0.5"
-            title={description}
-          >
-            {description}
-          </p>
-        )}
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="text-right">
-          <div className="text-xs text-[var(--color-text-muted)] mb-0.5">
-            {isFilterActive ? "Filtered" : "Total"} Downloads (Last Week)
-          </div>
-          <div className="flex items-center justify-end gap-2">
-            <span className="text-xl font-semibold tabular-nums">{formattedDownloads}</span>
-            {isFilterActive && (
-              <Badge variant="secondary" className="text-xs font-normal">
-                {filterCount} versions
-              </Badge>
-            )}
-          </div>
+      <div className="border-l-[3px] border-[var(--color-bg-accent)] pl-5">
+        <span className="font-code text-[0.7rem] uppercase tracking-[0.08em] text-[var(--color-text-tertiary)]">
+          {isFilterActive ? "Filtered downloads" : "Downloads last week"}
+        </span>
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          <strong className="text-3xl font-semibold tabular-nums tracking-[-0.035em]">
+            {downloads.toLocaleString()}
+          </strong>
+          {isFilterActive && (
+            <Badge variant="secondary">{filterCount} versions</Badge>
+          )}
         </div>
-
-        {isFilterActive && onVersionFilterChange && (
-          <button
-            onClick={() => onVersionFilterChange("")}
-            className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-          >
-            Clear filter
-          </button>
-        )}
       </div>
-    </div>
+    </header>
   );
 };
 

@@ -1,6 +1,8 @@
 import React from "react";
+import { ShieldCheck } from "lucide-react";
 import PackageSearchInput from "./PackageSearchInput";
 import VersionFilterInput from "./VersionFilterInput";
+import { IconButton } from "./ui/icon-button";
 
 interface SearchBoxProps {
   searchTerm: string;
@@ -27,8 +29,8 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 }) => {
   if (isCompact) {
     return (
-      <div className="flex items-center gap-4 mb-6 flex-wrap justify-between">
-        <div className="flex-[2_0_300px] max-w-md">
+      <section className="mt-6 mb-0 flex flex-wrap items-center justify-between gap-4 border-b border-[var(--color-border-default)] pb-6">
+        <div className="flex-[2_0_280px] max-w-lg">
           <PackageSearchInput
             searchTerm={searchTerm}
             onSearchTermChange={onSearchTermChange}
@@ -36,23 +38,21 @@ const SearchBox: React.FC<SearchBoxProps> = ({
             isLoading={isLoading}
           />
         </div>
-        <div className="flex items-center gap-2 flex-wrap ml-auto">
+        <div className="ml-auto flex flex-[1_0_280px] flex-wrap items-center justify-end gap-2">
           {onFormalOnlyChange && (
-            <button
+            <IconButton
               onClick={() => onFormalOnlyChange(!formalOnly)}
               disabled={isLoading}
-              title="Show only formal (stable) releases without pre-release tags"
-              className={`h-9 px-3 text-xs rounded-md border transition-colors flex items-center gap-1.5 ${
-                formalOnly
-                  ? "bg-[var(--color-primary)] text-[var(--color-primary-foreground)] border-[var(--color-primary)] hover:bg-[var(--color-primary)]/90"
-                  : "bg-[var(--color-bg)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text)]"
-              } disabled:opacity-40 disabled:pointer-events-none`}
+              variant={formalOnly ? "default" : "outline"}
+              label="Stable releases only"
+              aria-pressed={formalOnly}
+              tooltipAlign="start"
             >
-              Formal only
-            </button>
+              <ShieldCheck className="h-4 w-4" />
+            </IconButton>
           )}
           {onVersionFilter && (
-            <div className="flex-[1_0_200px] max-w-sm">
+            <div className="flex-[1_0_240px] max-w-md">
               <VersionFilterInput
                 onVersionFilter={onVersionFilter}
                 versionFilter={versionFilter}
@@ -61,20 +61,27 @@ const SearchBox: React.FC<SearchBoxProps> = ({
             </div>
           )}
         </div>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1 w-full px-4">
-      <div className="w-full max-w-xl space-y-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-semibold text-[var(--color-text)]">
-            npm Version Popularity
+    <section className="flex flex-1 flex-col justify-start py-12 md:pt-20 md:pb-24">
+      <div className="max-w-3xl">
+        <div className="eyebrow mb-5">npm version popularity</div>
+        <div className="flex flex-col items-start gap-7">
+          <h1 className="m-0 max-w-[680px] text-[clamp(2.5rem,4.6vw,4.25rem)] leading-[1.02] tracking-[-0.05em] text-[var(--color-text-primary)]">
+            Find the npm version people actually use.
           </h1>
-          <p className="text-lg text-[var(--color-text-muted)]">
-            Explore package version downloads and popularity
+          <p className="m-0 max-w-[620px] text-lg leading-relaxed text-[var(--color-text-secondary)]">
+            Search a package to compare its weekly downloads by release.
           </p>
+        </div>
+      </div>
+
+      <div className="relative mt-8 max-w-[780px] rounded-[var(--radius-surface)] border border-[var(--color-border-strong)] bg-[var(--color-bg-surface)] p-2 shadow-[var(--shadow-raised)] before:absolute before:-top-[7px] before:left-8 before:h-3.5 before:w-3.5 before:rounded-full before:bg-[var(--color-bg-accent)] before:content-[''] md:p-3">
+        <div className="mb-2 px-2 pt-1 font-code text-[0.7rem] uppercase tracking-[0.08em] text-[var(--color-text-tertiary)]">
+          Package name
         </div>
         <PackageSearchInput
           searchTerm={searchTerm}
@@ -84,7 +91,11 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           size="large"
         />
       </div>
-    </div>
+
+      <div className="mt-5 max-w-[780px] font-code text-xs text-[var(--color-text-tertiary)]">
+        Public npm packages · weekly download data
+      </div>
+    </section>
   );
 };
 

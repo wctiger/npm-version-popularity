@@ -86,9 +86,7 @@ const AppContent: React.FC = () => {
         <PackageResults
           packageInfo={packageInfo}
           versionFilter={params.filter}
-          onVersionFilterChange={handleVersionFilterChange}
           formalOnly={params.formal}
-          onFormalOnlyChange={handleFormalOnlyChange}
         />
       );
     }

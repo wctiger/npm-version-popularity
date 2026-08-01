@@ -5,27 +5,27 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
+  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-control)] border border-transparent text-sm font-semibold transition-[background-color,border-color,transform,color] hover:-translate-y-px disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-45",
   {
     variants: {
       variant: {
         default:
-          "bg-[var(--color-primary)] text-white shadow-sm hover:bg-[var(--color-primary-hover)]",
+          "bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] hover:bg-[var(--button-primary-bg-hover)]",
         destructive:
-          "bg-red-500 text-white shadow-sm hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700",
+          "bg-[var(--color-text-danger)] text-white hover:opacity-90",
         outline:
-          "border border-[var(--color-border)] bg-[var(--color-bg)] shadow-sm hover:bg-[var(--color-bg-subtle)] text-[var(--color-text)]",
+          "border-[var(--button-border)] bg-[var(--button-secondary-bg)] text-[var(--button-secondary-text)] hover:bg-[var(--color-bg-subtle)]",
         secondary:
-          "bg-[var(--color-bg-subtle)] text-[var(--color-text)] shadow-sm hover:bg-[var(--color-border)]",
+          "bg-[var(--color-bg-subtle)] text-[var(--color-text-brand)] hover:bg-[var(--color-border-default)]",
         ghost:
-          "hover:bg-[var(--color-bg-subtle)] text-[var(--color-text)]",
-        link: "text-[var(--color-primary)] underline-offset-4 hover:underline",
+          "bg-transparent text-[var(--color-text-brand)] hover:bg-[var(--color-bg-subtle)]",
+        link: "text-[var(--color-text-brand)] underline-offset-4 hover:translate-y-0 hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-10 rounded-lg px-8",
-        icon: "h-9 w-9",
+        default: "min-h-11 px-4 py-2.5",
+        sm: "min-h-9 px-3 text-xs",
+        lg: "min-h-12 px-8",
+        icon: "h-11 w-11",
       },
     },
     defaultVariants: {

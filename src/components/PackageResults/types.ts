@@ -3,9 +3,7 @@ import { PackageInfo, PackageVersion } from "../../services/npmService";
 export interface PackageResultsProps {
   packageInfo: PackageInfo;
   versionFilter?: string;
-  onVersionFilterChange?: (filter: string) => void;
   formalOnly?: boolean;
-  onFormalOnlyChange?: (formalOnly: boolean) => void;
 }
 
 export interface VersionWithPercentage extends PackageVersion {
@@ -18,8 +16,4 @@ export interface PackageHeaderProps {
   downloads: number;
   isFilterActive: boolean;
   filterCount: number;
-  versionFilter: string;
-  onVersionFilterChange?: (filter: string) => void;
-  formalOnly?: boolean;
-  onFormalOnlyChange?: (formalOnly: boolean) => void;
 }

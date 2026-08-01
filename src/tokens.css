@@ -1,0 +1,160 @@
+/* Relay-inspired design tokens: primitive -> semantic -> component. */
+:root {
+  color-scheme: light;
+
+  --primitive-white: #ffffff;
+  --primitive-ink-1000: #0c1220;
+  --primitive-ink-950: #111827;
+  --primitive-ink-925: #131c2e;
+  --primitive-ink-875: #172642;
+  --primitive-ink-850: #18243a;
+  --primitive-ink-750: #2a3852;
+  --primitive-ink-650: #53617a;
+  --primitive-ink-600: #56627a;
+  --primitive-ink-500: #737f96;
+  --primitive-ink-450: #8793aa;
+  --primitive-ink-300: #bbc3d1;
+  --primitive-ink-250: #b8c2d6;
+  --primitive-ink-200: #d7dce5;
+  --primitive-ink-100: #e9ecf1;
+  --primitive-ink-50: #f5f6f8;
+  --primitive-ink-25: #f3f5f9;
+
+  --primitive-blue-700: #173fb7;
+  --primitive-blue-600: #2358e6;
+  --primitive-blue-500: #3974ff;
+  --primitive-blue-400: #7298ff;
+  --primitive-blue-300: #9db8ff;
+  --primitive-blue-100: #dce6ff;
+  --primitive-blue-50: #f1f5ff;
+
+  --primitive-orange-600: #d6531f;
+  --primitive-orange-500: #f4662a;
+  --primitive-orange-400: #ff7a43;
+  --primitive-orange-300: #ff8b59;
+  --primitive-green-900: #123d31;
+  --primitive-green-700: #176145;
+  --primitive-green-300: #83d6b5;
+  --primitive-green-100: #cdeee1;
+  --primitive-red-900: #482328;
+  --primitive-red-700: #a93131;
+  --primitive-red-300: #ff9c9c;
+  --primitive-red-100: #f9d6d6;
+
+  --primitive-space-1: 0.25rem;
+  --primitive-space-2: 0.5rem;
+  --primitive-space-3: 0.75rem;
+  --primitive-space-4: 1rem;
+  --primitive-space-5: 1.25rem;
+  --primitive-space-6: 1.5rem;
+  --primitive-space-8: 2rem;
+  --primitive-space-10: 2.5rem;
+  --primitive-space-12: 3rem;
+  --primitive-space-16: 4rem;
+  --primitive-space-20: 5rem;
+
+  --primitive-radius-sm: 0.375rem;
+  --primitive-radius-md: 0.75rem;
+  --primitive-radius-lg: 1.125rem;
+  --primitive-radius-round: 999px;
+  --primitive-font-sans: "Avenir Next", Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
+  --primitive-font-display: Georgia, "Times New Roman", serif;
+  --primitive-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --primitive-shadow-sm: 0 1px 2px rgb(17 24 39 / 8%);
+  --primitive-shadow-md: 0 12px 35px rgb(17 24 39 / 10%);
+  --primitive-shadow-dark-sm: 0 1px 2px rgb(0 0 0 / 30%);
+  --primitive-shadow-dark-md: 0 12px 35px rgb(0 0 0 / 28%);
+
+  --color-bg-canvas: var(--primitive-ink-50);
+  --color-bg-surface: var(--primitive-white);
+  --color-bg-elevated: var(--primitive-white);
+  --color-bg-subtle: var(--primitive-blue-50);
+  --color-bg-inverse: var(--primitive-ink-950);
+  --color-bg-brand: var(--primitive-blue-600);
+  --color-bg-brand-hover: var(--primitive-blue-700);
+  --color-bg-accent: var(--primitive-orange-500);
+  --color-bg-success: var(--primitive-green-100);
+  --color-bg-danger: var(--primitive-red-100);
+  --color-text-primary: var(--primitive-ink-950);
+  --color-text-secondary: var(--primitive-ink-600);
+  --color-text-tertiary: var(--primitive-ink-600);
+  --color-text-inverse: var(--primitive-white);
+  --color-text-on-accent: var(--primitive-ink-950);
+  --color-text-brand: var(--primitive-blue-700);
+  --color-text-success: var(--primitive-green-700);
+  --color-text-danger: var(--primitive-red-700);
+  --color-border-default: var(--primitive-ink-200);
+  --color-border-strong: var(--primitive-ink-450);
+  --color-border-brand: var(--primitive-blue-500);
+  --color-focus-ring: var(--primitive-orange-600);
+
+  --space-related: var(--primitive-space-2);
+  --space-grouped: var(--primitive-space-3);
+  --space-content: var(--primitive-space-4);
+  --space-component-gap: var(--primitive-space-5);
+  --space-component-padding: var(--primitive-space-6);
+  --space-surface-padding: var(--primitive-space-8);
+  --space-layout-gap: var(--primitive-space-10);
+  --space-layout-stack: var(--primitive-space-12);
+  --space-section: var(--primitive-space-20);
+  --radius-subtle: var(--primitive-radius-sm);
+  --radius-control: var(--primitive-radius-md);
+  --radius-surface: var(--primitive-radius-lg);
+  --radius-pill: var(--primitive-radius-round);
+  --shadow-low: var(--primitive-shadow-sm);
+  --shadow-raised: var(--primitive-shadow-md);
+  --font-body: var(--primitive-font-sans);
+  --font-heading: var(--primitive-font-display);
+  --font-code: var(--primitive-font-mono);
+
+}
+
+.dark {
+  color-scheme: dark;
+  --color-bg-canvas: var(--primitive-ink-1000);
+  --color-bg-surface: var(--primitive-ink-925);
+  --color-bg-elevated: var(--primitive-ink-850);
+  --color-bg-subtle: var(--primitive-ink-875);
+  --color-bg-inverse: var(--primitive-white);
+  --color-bg-brand: var(--primitive-blue-500);
+  --color-bg-brand-hover: var(--primitive-blue-400);
+  --color-bg-accent: var(--primitive-orange-400);
+  --color-bg-success: var(--primitive-green-900);
+  --color-bg-danger: var(--primitive-red-900);
+  --color-text-primary: var(--primitive-ink-25);
+  --color-text-secondary: var(--primitive-ink-250);
+  --color-text-tertiary: var(--primitive-ink-450);
+  --color-text-inverse: var(--primitive-ink-950);
+  --color-text-brand: var(--primitive-blue-300);
+  --color-text-success: var(--primitive-green-300);
+  --color-text-danger: var(--primitive-red-300);
+  --color-border-default: var(--primitive-ink-750);
+  --color-border-strong: var(--primitive-ink-650);
+  --color-border-brand: var(--primitive-blue-400);
+  --color-focus-ring: var(--primitive-orange-300);
+  --shadow-low: var(--primitive-shadow-dark-sm);
+  --shadow-raised: var(--primitive-shadow-dark-md);
+}
+
+/*
+ * Component tokens belong on every semantic color scope. Keeping these mappings
+ * on both :root and .dark preserves dark values if the theme class moves from
+ * documentElement to a page wrapper.
+ */
+:root,
+.dark {
+  --button-primary-bg: var(--color-bg-brand);
+  --button-primary-bg-hover: var(--color-bg-brand-hover);
+  --button-primary-text: var(--color-text-inverse);
+  --button-secondary-bg: var(--color-bg-elevated);
+  --button-secondary-text: var(--color-text-primary);
+  --button-border: var(--color-border-default);
+  --input-bg: var(--color-bg-surface);
+  --input-text: var(--color-text-primary);
+  --input-placeholder: var(--color-text-tertiary);
+  --input-border: var(--color-border-strong);
+  --input-border-focus: var(--color-border-brand);
+  --card-bg: var(--color-bg-surface);
+  --card-border: var(--color-border-default);
+  --card-shadow: var(--shadow-low);
+}

@@ -76,8 +76,8 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
     };
   }, []);
 
-  const inputHeight = size === "large" ? "h-12" : "h-9";
-  const buttonHeight = size === "large" ? "h-12 px-5" : "h-9";
+  const inputHeight = size === "large" ? "h-14" : "h-11";
+  const buttonHeight = size === "large" ? "h-14 px-6" : "h-11 px-4";
 
   return (
     <div className="relative w-full">
@@ -89,18 +89,21 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
             onChange={handleLocalInputChange}
             onKeyDown={handleKeyDown}
             onFocus={() => searchTerm.length > 0 && setShowSuggestions(true)}
-            placeholder="Search packages..."
+            placeholder="Try react, vite, lodash…"
             disabled={isLoading}
+            autoFocus={size === "large"}
+            aria-label="Package name"
+            name="package-name"
             className={`${inputHeight} ${size === "large" ? "text-base" : ""}`}
           />
           {showSuggestions &&
             (packageSuggestions.length > 0 || fetchingSuggestions) && (
               <div
                 ref={suggestionsRef}
-                className="absolute top-full left-0 right-0 z-50 mt-1.5 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg shadow-lg max-h-60 overflow-y-auto custom-scrollbar"
+                className="custom-scrollbar absolute top-full right-0 left-0 z-50 mt-2 max-h-64 overflow-y-auto rounded-[var(--radius-control)] border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] shadow-[var(--shadow-raised)]"
               >
                 {fetchingSuggestions && (
-                  <div className="flex items-center justify-center p-4 text-sm text-[var(--color-text-muted)]">
+                  <div className="flex items-center justify-center p-4 text-sm text-[var(--color-text-secondary)]">
                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
                     Searching...
                   </div>
@@ -108,7 +111,7 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
                 {packageSuggestions.map((pkg) => (
                   <div
                     key={pkg.name}
-                    className="p-2.5 hover:bg-[var(--color-bg-subtle)] cursor-pointer border-b border-[var(--color-border-subtle)] last:border-b-0 transition-colors"
+                    className="cursor-pointer border-b border-[var(--color-border-default)] p-3 transition-colors last:border-b-0 hover:bg-[var(--color-bg-subtle)]"
                     onClick={() => handleSuggestionClick(pkg.name)}
                   >
                     <PackageSuggestionLabel package={pkg} />
@@ -128,6 +131,9 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
           ) : (
             <Search className="h-4 w-4" />
           )}
+          <span className={size === "large" ? "inline" : "sr-only"}>
+            Search
+          </span>
         </Button>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Filter } from "lucide-react";
+import { Filter, FilterX } from "lucide-react";
 
 // Version Filter Input Component interface
 interface VersionFilterInputProps {
@@ -41,6 +41,20 @@ const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
     onVersionFilter("");
   };
 
+  const isDirty = inputValue !== versionFilter;
+  const hasAppliedFilter = Boolean(versionFilter);
+
+  const handleButtonClick = () => {
+    if (isDirty) {
+      applyFilter();
+      return;
+    }
+
+    if (hasAppliedFilter) {
+      handleClear();
+    }
+  };
+
   return (
     <div className="flex gap-2 w-full">
       <div className="relative flex-1">
@@ -50,25 +64,22 @@ const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
           onChange={handleFilterChange}
           onKeyDown={handleFilterKeyDown}
           disabled={isLoading}
+          aria-label="Version range"
+          name="version-range"
           title="Enter semver range (e.g., ^3.0.0, ~2.1, >=4.0.0)"
         />
-        {inputValue && (
-          <button
-            onClick={handleClear}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            type="button"
-          >
-            ×
-          </button>
-        )}
       </div>
       <Button
-        onClick={applyFilter}
-        disabled={isLoading}
-        variant={versionFilter ? "default" : "outline"}
+        onClick={handleButtonClick}
+        disabled={isLoading || (!isDirty && !hasAppliedFilter)}
+        variant={isDirty || hasAppliedFilter ? "default" : "outline"}
       >
-        <Filter className="h-4 w-4 mr-2" />
-        Filter
+        {!isDirty && hasAppliedFilter ? (
+          <FilterX className="h-4 w-4" />
+        ) : (
+          <Filter className="h-4 w-4" />
+        )}
+        {isDirty ? "Apply" : hasAppliedFilter ? "Clear filter" : "Filter"}
       </Button>
     </div>
   );

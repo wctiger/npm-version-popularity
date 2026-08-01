@@ -9,34 +9,43 @@ interface AppLayoutProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children, onLogoClick }) => {
   return (
-    <div className="h-screen w-full flex flex-col bg-[var(--color-bg)]">
-      <header className="flex-none flex items-center justify-between px-6 py-3 border-b border-[var(--color-border)]">
-        <button
-          onClick={onLogoClick}
-          className="text-lg font-semibold text-[var(--color-text)] hover:text-[var(--color-primary)] cursor-pointer bg-transparent border-none transition-colors"
-        >
-          npm versions
-        </button>
-        <ThemeToggle />
+    <div className="min-h-screen w-full flex flex-col bg-[var(--color-bg-canvas)]">
+      <header className="sticky top-0 z-40 border-b border-[color-mix(in_srgb,var(--color-border-default),transparent_20%)] bg-[color-mix(in_srgb,var(--color-bg-canvas),transparent_10%)] backdrop-blur-xl">
+        <div className="page-shell min-h-[68px] flex items-center justify-between gap-6">
+          <button
+            onClick={onLogoClick}
+            className="group inline-flex items-center gap-3 border-0 bg-transparent p-0 font-semibold text-[var(--color-text-primary)]"
+            title="Return to package search"
+          >
+            <span
+              aria-hidden="true"
+              className="relative h-[25px] w-[25px] rounded-full border-2 border-[var(--color-text-primary)] after:absolute after:-right-[5px] after:-top-1 after:h-[9px] after:w-[9px] after:rounded-full after:bg-[var(--color-bg-accent)] after:content-['']"
+            />
+            <span className="text-[var(--color-text-brand)]">
+              npm version popularity
+            </span>
+          </button>
+          <div className="flex items-center gap-4">
+            <span className="hidden font-code text-[0.7rem] uppercase tracking-[0.08em] text-[var(--color-text-tertiary)] sm:inline">
+              npm adoption data
+            </span>
+            <ThemeToggle />
+          </div>
+        </div>
       </header>
 
-      <main className="flex-1 w-full overflow-auto flex flex-col custom-scrollbar">
-        <div className="max-w-7xl w-full mx-auto px-6 text-[var(--color-text)] flex-1 flex flex-col py-6">
-          {children}
-        </div>
+      <main className="flex flex-1 flex-col text-[var(--color-text-primary)]">
+        <div className="page-shell flex flex-1 flex-col">{children}</div>
       </main>
 
-      <footer className="text-center w-full py-4 border-t border-[var(--color-border)]">
-        <div className="flex justify-center items-center gap-3">
-          <span className="text-xs text-[var(--color-text-muted)]">
-            ©{new Date().getFullYear()}
-          </span>
-          <span className="text-[var(--color-border)]">·</span>
+      <footer className="w-full border-t border-[var(--color-border-default)] py-6">
+        <div className="page-shell flex items-center justify-between gap-4 text-xs text-[var(--color-text-secondary)]">
+          <span className="font-code">©{new Date().getFullYear()} · weekly npm downloads</span>
           <a
             href="https://github.com/wctiger/npm-version-popularity"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+            className="flex items-center gap-1.5 transition-colors hover:text-[var(--color-text-primary)]"
           >
             <Github className="h-3.5 w-3.5" />
             GitHub
