@@ -110,98 +110,12 @@ code,
   content: "";
 }
 
-.signal-path {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-bg-surface);
-  box-shadow: var(--shadow-raised);
-}
-
-.signal-path::before {
-  position: absolute;
-  z-index: 2;
-  top: -13px;
-  left: -13px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--color-bg-accent);
-  content: "";
-}
-
-.signal-step {
-  position: relative;
-  min-height: 118px;
-  padding: var(--space-component-padding);
-}
-
-.signal-step + .signal-step {
-  border-left: 1px solid var(--color-border-default);
-}
-
-.signal-step:not(:last-child)::after {
-  position: absolute;
-  z-index: 3;
-  top: 50%;
-  right: -17px;
-  display: grid;
-  width: 34px;
-  height: 34px;
-  place-items: center;
-  transform: translateY(-50%);
-  border: 1px solid var(--color-border-default);
-  border-radius: 50%;
-  background: var(--color-bg-canvas);
-  color: var(--color-text-tertiary);
-  content: "→";
-  font-family: var(--font-code);
-}
-
-.signal-step span {
-  color: var(--color-text-tertiary);
-  font-family: var(--font-code);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.signal-step strong {
-  display: block;
-  margin-top: 1.25rem;
-  font-size: 0.9rem;
-}
-
 .chart-tooltip {
   border: 1px solid var(--color-border-default);
   border-radius: var(--radius-subtle);
   background: var(--color-bg-elevated);
   box-shadow: var(--shadow-raised);
   color: var(--color-text-primary);
-}
-
-@media (max-width: 800px) {
-  .signal-path {
-    grid-template-columns: 1fr;
-  }
-
-  .signal-step {
-    min-height: auto;
-  }
-
-  .signal-step + .signal-step {
-    border-top: 1px solid var(--color-border-default);
-    border-left: 0;
-  }
-
-  .signal-step:not(:last-child)::after {
-    top: auto;
-    right: 50%;
-    bottom: -17px;
-    transform: translateX(50%);
-    content: "↓";
-  }
 }
 
 @media (max-width: 480px) {

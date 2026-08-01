@@ -91,6 +91,8 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
             onFocus={() => searchTerm.length > 0 && setShowSuggestions(true)}
             placeholder="Try react, vite, lodash…"
             disabled={isLoading}
+            autoFocus={size === "large"}
+            aria-label="Package name"
             className={`${inputHeight} ${size === "large" ? "text-base" : ""}`}
           />
           {showSuggestions &&
