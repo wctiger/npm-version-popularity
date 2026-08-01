@@ -8,7 +8,11 @@ import { useSearchParams } from "./hooks/useSearchParams";
 
 const AppContent: React.FC = () => {
   // URL params state management
-  const { params, setParam, resetParams } = useSearchParams({
+  const { params, setParam, resetParams } = useSearchParams<{
+    q: string;
+    filter: string;
+    formal: boolean;
+  }>({
     q: "",
     filter: "",
     formal: true,
@@ -22,7 +26,6 @@ const AppContent: React.FC = () => {
     error,
     packageInfo,
     hasSearched,
-    resetSearch,
   } = usePackageSearch();
 
   // Sync URL params with local state
@@ -61,7 +64,6 @@ const AppContent: React.FC = () => {
 
   // Handle logo click to reset the app to home state
   const handleLogoClick = () => {
-    resetSearch();
     setSearchTerm("");
     resetParams();
   };

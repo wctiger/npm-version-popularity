@@ -15,7 +15,7 @@ A modern, interactive web application to visualize and analyze the popularity of
 ### Prerequisites
 
 - Node.js (v18 or higher)
-- npm or yarn
+- Bun
 
 ### Installation
 
@@ -27,7 +27,7 @@ A modern, interactive web application to visualize and analyze the popularity of
 
 2. Install dependencies:
    ```bash
-   npm install
+   bun install
    ```
 
 ### Development
@@ -35,7 +35,7 @@ A modern, interactive web application to visualize and analyze the popularity of
 Start the development server:
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 The application will be available at `http://localhost:5173`.
@@ -45,7 +45,7 @@ The application will be available at `http://localhost:5173`.
 Build the application for production:
 
 ```bash
-npm run build
+bun run build
 ```
 
 ## Tech Stack
