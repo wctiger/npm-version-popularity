@@ -44,11 +44,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
               onClick={() => onFormalOnlyChange(!formalOnly)}
               disabled={isLoading}
               variant={formalOnly ? "default" : "outline"}
-              label={
-                formalOnly
-                  ? "Include prerelease versions"
-                  : "Show stable releases only"
-              }
+              label="Stable releases only"
               aria-pressed={formalOnly}
               tooltipAlign="start"
             >

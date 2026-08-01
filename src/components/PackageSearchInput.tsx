@@ -93,6 +93,7 @@ const PackageSearchInput: React.FC<PackageSearchInputProps> = ({
             disabled={isLoading}
             autoFocus={size === "large"}
             aria-label="Package name"
+            name="package-name"
             className={`${inputHeight} ${size === "large" ? "text-base" : ""}`}
           />
           {showSuggestions &&

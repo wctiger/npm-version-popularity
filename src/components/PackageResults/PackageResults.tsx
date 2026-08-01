@@ -11,9 +11,7 @@ import MajorVersionChart from "./MajorVersionChart";
 const PackageResults: React.FC<PackageResultsProps> = ({
   packageInfo,
   versionFilter = "",
-  onVersionFilterChange,
   formalOnly = false,
-  onFormalOnlyChange,
 }) => {
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
@@ -110,10 +108,6 @@ const PackageResults: React.FC<PackageResultsProps> = ({
         downloads={filteredTotalDownloads}
         isFilterActive={isFilterActive}
         filterCount={filteredVersions.length}
-        versionFilter={versionFilter}
-        onVersionFilterChange={onVersionFilterChange}
-        formalOnly={formalOnly}
-        onFormalOnlyChange={onFormalOnlyChange}
       />
 
       <div className="grid gap-5 xl:grid-cols-12">

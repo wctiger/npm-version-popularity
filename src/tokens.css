@@ -28,6 +28,7 @@
   --primitive-blue-100: #dce6ff;
   --primitive-blue-50: #f1f5ff;
 
+  --primitive-orange-600: #d6531f;
   --primitive-orange-500: #f4662a;
   --primitive-orange-400: #ff7a43;
   --primitive-orange-300: #ff8b59;
@@ -76,7 +77,7 @@
   --color-bg-danger: var(--primitive-red-100);
   --color-text-primary: var(--primitive-ink-950);
   --color-text-secondary: var(--primitive-ink-600);
-  --color-text-tertiary: var(--primitive-ink-500);
+  --color-text-tertiary: var(--primitive-ink-600);
   --color-text-inverse: var(--primitive-white);
   --color-text-on-accent: var(--primitive-ink-950);
   --color-text-brand: var(--primitive-blue-700);
@@ -85,7 +86,7 @@
   --color-border-default: var(--primitive-ink-200);
   --color-border-strong: var(--primitive-ink-450);
   --color-border-brand: var(--primitive-blue-500);
-  --color-focus-ring: var(--primitive-orange-500);
+  --color-focus-ring: var(--primitive-orange-600);
 
   --space-related: var(--primitive-space-2);
   --space-grouped: var(--primitive-space-3);
@@ -106,20 +107,6 @@
   --font-heading: var(--primitive-font-display);
   --font-code: var(--primitive-font-mono);
 
-  --button-primary-bg: var(--color-bg-brand);
-  --button-primary-bg-hover: var(--color-bg-brand-hover);
-  --button-primary-text: var(--color-text-inverse);
-  --button-secondary-bg: var(--color-bg-elevated);
-  --button-secondary-text: var(--color-text-primary);
-  --button-border: var(--color-border-default);
-  --input-bg: var(--color-bg-surface);
-  --input-text: var(--color-text-primary);
-  --input-placeholder: var(--color-text-tertiary);
-  --input-border: var(--color-border-strong);
-  --input-border-focus: var(--color-border-brand);
-  --card-bg: var(--color-bg-surface);
-  --card-border: var(--color-border-default);
-  --card-shadow: var(--shadow-low);
 }
 
 .dark {
@@ -147,4 +134,27 @@
   --color-focus-ring: var(--primitive-orange-300);
   --shadow-low: var(--primitive-shadow-dark-sm);
   --shadow-raised: var(--primitive-shadow-dark-md);
+}
+
+/*
+ * Component tokens belong on every semantic color scope. Keeping these mappings
+ * on both :root and .dark preserves dark values if the theme class moves from
+ * documentElement to a page wrapper.
+ */
+:root,
+.dark {
+  --button-primary-bg: var(--color-bg-brand);
+  --button-primary-bg-hover: var(--color-bg-brand-hover);
+  --button-primary-text: var(--color-text-inverse);
+  --button-secondary-bg: var(--color-bg-elevated);
+  --button-secondary-text: var(--color-text-primary);
+  --button-border: var(--color-border-default);
+  --input-bg: var(--color-bg-surface);
+  --input-text: var(--color-text-primary);
+  --input-placeholder: var(--color-text-tertiary);
+  --input-border: var(--color-border-strong);
+  --input-border-focus: var(--color-border-brand);
+  --card-bg: var(--color-bg-surface);
+  --card-border: var(--color-border-default);
+  --card-shadow: var(--shadow-low);
 }

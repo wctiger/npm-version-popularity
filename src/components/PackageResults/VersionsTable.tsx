@@ -171,7 +171,11 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
                     <span className="min-w-[3rem] font-code text-xs tabular-nums">
                       {version.percentage}%
                     </span>
-                    <Progress value={version.percentage} className="w-16" />
+                    <Progress
+                      value={version.percentage}
+                      className="w-16"
+                      aria-label={`${version.version} download share`}
+                    />
                   </div>
                 </TableCell>
               </TableRow>
@@ -181,14 +185,20 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
       </div>
       <div className="flex flex-none flex-wrap items-center justify-between gap-4 border-t border-[var(--color-border-default)] px-6 py-4">
         <div className="flex items-center gap-2">
-          <span className="font-code text-xs text-[var(--color-text-secondary)]">Rows</span>
+          <label
+            htmlFor="page-size"
+            className="font-code text-xs text-[var(--color-text-secondary)]"
+          >
+            Rows
+          </label>
           <select
+            id="page-size"
             value={pageSize}
             onChange={(e) => {
               onPageSizeChange(Number(e.target.value));
               setCurrentPage(1);
             }}
-            className="h-9 rounded-[var(--radius-subtle)] border border-[var(--color-border-default)] bg-[var(--color-bg-surface)] px-2 font-code text-xs text-[var(--color-text-primary)] focus:outline-none"
+            className="h-9 rounded-[var(--radius-subtle)] border border-[var(--color-border-default)] bg-[var(--color-bg-surface)] px-2 font-code text-xs text-[var(--color-text-primary)]"
           >
             <option value={8}>8</option>
             <option value={12}>12</option>

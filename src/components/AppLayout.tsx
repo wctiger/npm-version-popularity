@@ -15,11 +15,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, onLogoClick }) => {
           <button
             onClick={onLogoClick}
             className="group inline-flex items-center gap-3 border-0 bg-transparent p-0 font-semibold text-[var(--color-text-primary)]"
-            aria-label="Return to package search"
+            title="Return to package search"
           >
-            <span className="relative h-[25px] w-[25px] rounded-full border-2 border-[var(--color-text-primary)] after:absolute after:-right-[5px] after:-top-1 after:h-[9px] after:w-[9px] after:rounded-full after:bg-[var(--color-bg-accent)] after:content-['']" />
-            <span>
-              version <span className="text-[var(--color-text-brand)]">signal</span>
+            <span
+              aria-hidden="true"
+              className="relative h-[25px] w-[25px] rounded-full border-2 border-[var(--color-text-primary)] after:absolute after:-right-[5px] after:-top-1 after:h-[9px] after:w-[9px] after:rounded-full after:bg-[var(--color-bg-accent)] after:content-['']"
+            />
+            <span className="text-[var(--color-text-brand)]">
+              npm version popularity
             </span>
           </button>
           <div className="flex items-center gap-4">

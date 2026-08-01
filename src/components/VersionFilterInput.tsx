@@ -41,6 +41,20 @@ const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
     onVersionFilter("");
   };
 
+  const isDirty = inputValue !== versionFilter;
+  const hasAppliedFilter = Boolean(versionFilter);
+
+  const handleButtonClick = () => {
+    if (isDirty) {
+      applyFilter();
+      return;
+    }
+
+    if (hasAppliedFilter) {
+      handleClear();
+    }
+  };
+
   return (
     <div className="flex gap-2 w-full">
       <div className="relative flex-1">
@@ -50,20 +64,22 @@ const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
           onChange={handleFilterChange}
           onKeyDown={handleFilterKeyDown}
           disabled={isLoading}
+          aria-label="Version range"
+          name="version-range"
           title="Enter semver range (e.g., ^3.0.0, ~2.1, >=4.0.0)"
         />
       </div>
       <Button
-        onClick={versionFilter ? handleClear : applyFilter}
-        disabled={isLoading}
-        variant={versionFilter ? "default" : "outline"}
+        onClick={handleButtonClick}
+        disabled={isLoading || (!isDirty && !hasAppliedFilter)}
+        variant={isDirty || hasAppliedFilter ? "default" : "outline"}
       >
-        {versionFilter ? (
+        {!isDirty && hasAppliedFilter ? (
           <FilterX className="h-4 w-4" />
         ) : (
           <Filter className="h-4 w-4" />
         )}
-        {versionFilter ? "Clear filter" : "Filter"}
+        {isDirty ? "Apply" : hasAppliedFilter ? "Clear filter" : "Filter"}
       </Button>
     </div>
   );

@@ -23,8 +23,6 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     },
     ref
   ) => {
-    const tooltipId = React.useId();
-
     return (
       <span className="group relative inline-flex">
         <Button
@@ -32,14 +30,12 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           size="icon"
           className={cn("rounded-full", className)}
           aria-label={label}
-          aria-describedby={tooltipId}
           {...props}
         >
           {children}
         </Button>
         <span
-          id={tooltipId}
-          role="tooltip"
+          aria-hidden="true"
           className={cn(
             "pointer-events-none absolute top-full z-50 mt-2 whitespace-nowrap rounded-[var(--radius-subtle)] border border-[var(--color-border-default)] bg-[var(--color-bg-inverse)] px-2.5 py-1.5 font-code text-[0.68rem] text-[var(--color-text-inverse)] opacity-0 shadow-[var(--shadow-raised)] transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",
             tooltipAlign === "start"
