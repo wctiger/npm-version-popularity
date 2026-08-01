@@ -90,7 +90,12 @@ const PackageResults: React.FC<PackageResultsProps> = ({
         };
       });
     }
-  }, [packageInfo.versions, packageInfo.totalDownloads, versionFilter]);
+  }, [
+    packageInfo.versions,
+    packageInfo.totalDownloads,
+    versionFilter,
+    formalOnly,
+  ]);
 
   // Calculate total downloads of filtered versions
   const filteredTotalDownloads = useMemo(() => {
