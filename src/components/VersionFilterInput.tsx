@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Filter } from "lucide-react";
+import { Filter, FilterX } from "lucide-react";
 
 // Version Filter Input Component interface
 interface VersionFilterInputProps {
@@ -52,24 +52,18 @@ const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
           disabled={isLoading}
           title="Enter semver range (e.g., ^3.0.0, ~2.1, >=4.0.0)"
         />
-        {inputValue && (
-          <button
-            onClick={handleClear}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)]"
-            type="button"
-            aria-label="Clear version filter"
-          >
-            ×
-          </button>
-        )}
       </div>
       <Button
-        onClick={applyFilter}
+        onClick={versionFilter ? handleClear : applyFilter}
         disabled={isLoading}
         variant={versionFilter ? "default" : "outline"}
       >
-        <Filter className="h-4 w-4" />
-        Filter
+        {versionFilter ? (
+          <FilterX className="h-4 w-4" />
+        ) : (
+          <Filter className="h-4 w-4" />
+        )}
+        {versionFilter ? "Clear filter" : "Filter"}
       </Button>
     </div>
   );

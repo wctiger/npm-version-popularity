@@ -1,6 +1,8 @@
 import React from "react";
+import { ShieldCheck } from "lucide-react";
 import PackageSearchInput from "./PackageSearchInput";
 import VersionFilterInput from "./VersionFilterInput";
+import { IconButton } from "./ui/icon-button";
 
 interface SearchBoxProps {
   searchTerm: string;
@@ -27,7 +29,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 }) => {
   if (isCompact) {
     return (
-      <section className="my-8 flex flex-wrap items-center justify-between gap-4 border-b border-[var(--color-border-default)] pb-8">
+      <section className="mt-6 mb-0 flex flex-wrap items-center justify-between gap-4 border-b border-[var(--color-border-default)] pb-6">
         <div className="flex-[2_0_280px] max-w-lg">
           <PackageSearchInput
             searchTerm={searchTerm}
@@ -38,18 +40,20 @@ const SearchBox: React.FC<SearchBoxProps> = ({
         </div>
         <div className="ml-auto flex flex-[1_0_280px] flex-wrap items-center justify-end gap-2">
           {onFormalOnlyChange && (
-            <button
+            <IconButton
               onClick={() => onFormalOnlyChange(!formalOnly)}
               disabled={isLoading}
-              title="Show only stable releases without prerelease tags"
-              className={`h-11 rounded-[var(--radius-control)] border px-4 font-code text-[0.7rem] uppercase tracking-[0.06em] transition-colors ${
+              variant={formalOnly ? "default" : "outline"}
+              label={
                 formalOnly
-                  ? "border-[var(--color-bg-brand)] bg-[var(--color-bg-brand)] text-[var(--color-text-inverse)] hover:bg-[var(--color-bg-brand-hover)]"
-                  : "border-[var(--color-border-default)] bg-[var(--color-bg-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text-primary)]"
-              } disabled:pointer-events-none disabled:opacity-40`}
+                  ? "Include prerelease versions"
+                  : "Show stable releases only"
+              }
+              aria-pressed={formalOnly}
+              tooltipAlign="start"
             >
-              Formal only
-            </button>
+              <ShieldCheck className="h-4 w-4" />
+            </IconButton>
           )}
           {onVersionFilter && (
             <div className="flex-[1_0_240px] max-w-md">
