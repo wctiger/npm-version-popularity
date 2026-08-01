@@ -57,11 +57,12 @@ const ThemeToggle: React.FC = () => {
 
   return (
     <Button
-      variant="ghost"
+      variant="outline"
       size="icon"
       onClick={toggleTheme}
-      className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-subtle)]"
+      className="rounded-full text-[var(--color-text-secondary)] hover:rotate-[8deg] hover:text-[var(--color-text-primary)]"
       title={getTitle()}
+      aria-label={getTitle()}
     >
       {theme === "light" && <Sun className="h-5 w-5" />}
       {theme === "dark" && <Moon className="h-5 w-5" />}

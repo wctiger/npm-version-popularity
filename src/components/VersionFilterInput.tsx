@@ -55,8 +55,9 @@ const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
         {inputValue && (
           <button
             onClick={handleClear}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)]"
             type="button"
+            aria-label="Clear version filter"
           >
             ×
           </button>
@@ -67,7 +68,7 @@ const VersionFilterInput: React.FC<VersionFilterInputProps> = ({
         disabled={isLoading}
         variant={versionFilter ? "default" : "outline"}
       >
-        <Filter className="h-4 w-4 mr-2" />
+        <Filter className="h-4 w-4" />
         Filter
       </Button>
     </div>

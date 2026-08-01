@@ -93,13 +93,13 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
   };
 
   return (
-    <div className="space-y-4 flex flex-col">
+    <div className="flex flex-col">
       <div className="flex-1">
         <Table>
-          <TableHeader className="sticky top-0 bg-background z-10">
+          <TableHeader className="sticky top-0 z-10 bg-[var(--color-bg-surface)]">
             <TableRow>
               <TableHead
-                className="cursor-pointer hover:bg-muted/50"
+                className="cursor-pointer hover:bg-[var(--color-bg-subtle)]"
                 onClick={() => handleSort("version")}
               >
                 <div className="flex items-center">
@@ -112,7 +112,7 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
                 </div>
               </TableHead>
               <TableHead
-                className="cursor-pointer hover:bg-muted/50"
+                className="cursor-pointer hover:bg-[var(--color-bg-subtle)]"
                 onClick={() => handleSort("date")}
               >
                 <div className="flex items-center">
@@ -125,7 +125,7 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
                 </div>
               </TableHead>
               <TableHead
-                className="cursor-pointer hover:bg-muted/50"
+                className="cursor-pointer hover:bg-[var(--color-bg-subtle)]"
                 onClick={() => handleSort("downloads")}
               >
                 <div className="flex items-center">
@@ -138,7 +138,7 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
                 </div>
               </TableHead>
               <TableHead
-                className="cursor-pointer hover:bg-muted/50"
+                className="cursor-pointer hover:bg-[var(--color-bg-subtle)]"
                 onClick={() => handleSort("percentage")}
               >
                 <div className="flex items-center">
@@ -154,21 +154,21 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
           </TableHeader>
           <TableBody>
             {paginatedVersions.map((version, index) => (
-              <TableRow key={`${version.version}-${index}`} className="border-[var(--color-border-subtle)]">
-                <TableCell className="py-2.5">
-                  <Badge variant="secondary" className="font-mono text-xs">
+              <TableRow key={`${version.version}-${index}`}>
+                <TableCell>
+                  <Badge variant="secondary">
                     {version.version}
                   </Badge>
                 </TableCell>
-                <TableCell className="py-2.5 text-[var(--color-text-muted)] tabular-nums">
+                <TableCell className="font-code text-xs tabular-nums text-[var(--color-text-secondary)]">
                   {new Date(version.date).toLocaleDateString()}
                 </TableCell>
-                <TableCell className="py-2.5 tabular-nums">
+                <TableCell className="font-code text-xs tabular-nums">
                   {version.downloads.toLocaleString()}
                 </TableCell>
-                <TableCell className="py-2.5">
+                <TableCell>
                   <div className="flex items-center gap-3">
-                    <span className="text-sm tabular-nums min-w-[3rem]">
+                    <span className="min-w-[3rem] font-code text-xs tabular-nums">
                       {version.percentage}%
                     </span>
                     <Progress value={version.percentage} className="w-16" />
@@ -179,16 +179,16 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
           </TableBody>
         </Table>
       </div>
-      <div className="flex-none flex items-center justify-between pt-3 border-t border-[var(--color-border-subtle)]">
+      <div className="flex flex-none flex-wrap items-center justify-between gap-4 border-t border-[var(--color-border-default)] px-6 py-4">
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[var(--color-text-muted)]">Rows</span>
+          <span className="font-code text-xs text-[var(--color-text-secondary)]">Rows</span>
           <select
             value={pageSize}
             onChange={(e) => {
               onPageSizeChange(Number(e.target.value));
               setCurrentPage(1);
             }}
-            className="h-8 px-2 text-xs border border-[var(--color-border)] rounded-md bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
+            className="h-9 rounded-[var(--radius-subtle)] border border-[var(--color-border-default)] bg-[var(--color-bg-surface)] px-2 font-code text-xs text-[var(--color-text-primary)] focus:outline-none"
           >
             <option value={8}>8</option>
             <option value={12}>12</option>
@@ -200,21 +200,25 @@ const VersionsTable: React.FC<VersionsTableProps> = ({
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-xs text-[var(--color-text-muted)] tabular-nums">
-            {startIndex + 1}–{Math.min(startIndex + pageSize, sortedVersions.length)} of {sortedVersions.length}
+          <span className="font-code text-xs tabular-nums text-[var(--color-text-secondary)]">
+            {sortedVersions.length === 0 ? 0 : startIndex + 1}–
+            {Math.min(startIndex + pageSize, sortedVersions.length)} of{" "}
+            {sortedVersions.length}
           </span>
           <div className="flex gap-1">
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className="h-8 w-8 flex items-center justify-center rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text)] disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-subtle)] border border-[var(--color-border-default)] bg-[var(--color-bg-surface)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text-primary)] disabled:pointer-events-none disabled:opacity-40"
+              aria-label="Previous page"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-              disabled={currentPage === totalPages}
-              className="h-8 w-8 flex items-center justify-center rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text)] disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              disabled={currentPage === totalPages || totalPages === 0}
+              className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-subtle)] border border-[var(--color-border-default)] bg-[var(--color-bg-surface)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text-primary)] disabled:pointer-events-none disabled:opacity-40"
+              aria-label="Next page"
             >
               <ChevronRight className="h-4 w-4" />
             </button>

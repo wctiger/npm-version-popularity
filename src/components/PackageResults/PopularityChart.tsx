@@ -12,18 +12,17 @@ interface PopularityChartProps {
   versions: VersionWithPercentage[];
 }
 
-// Modern indigo/violet palette with complementary colors
 const COLORS = [
-  "#6366f1", // indigo-500
-  "#8b5cf6", // violet-500
-  "#a855f7", // purple-500
-  "#ec4899", // pink-500
-  "#f43f5e", // rose-500
-  "#f97316", // orange-500
-  "#eab308", // yellow-500
-  "#22c55e", // green-500
-  "#14b8a6", // teal-500
-  "#06b6d4", // cyan-500
+  "#2358e6",
+  "#f4662a",
+  "#2a9a70",
+  "#7298ff",
+  "#ff8b59",
+  "#176145",
+  "#173fb7",
+  "#9db8ff",
+  "#53617a",
+  "#bbc3d1",
 ];
 
 const CustomTooltip = ({
@@ -38,10 +37,14 @@ const CustomTooltip = ({
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-background border rounded p-2 shadow-sm text-sm">
-        <p className="font-medium">{data.name}</p>
-        <p>Downloads: {data.value.toLocaleString()}</p>
-        <p>Share: {data.percentage}%</p>
+      <div className="chart-tooltip p-3 text-sm">
+        <p className="mb-2 font-semibold">{data.name}</p>
+        <p className="mb-1 text-[var(--color-text-secondary)]">
+          Downloads: {data.value.toLocaleString()}
+        </p>
+        <p className="mb-0 text-[var(--color-text-secondary)]">
+          Share: {data.percentage}%
+        </p>
       </div>
     );
   }
@@ -82,10 +85,13 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
   }, [versions]);
 
   return (
-    <div className="w-full flex flex-col gap-3">
-      <h3 className="text-sm font-medium text-[var(--color-text-muted)] text-center">
-        Version Distribution
-      </h3>
+    <div className="flex w-full flex-col gap-3">
+      <div>
+        <span className="font-code text-[0.7rem] uppercase tracking-[0.08em] text-[var(--color-text-tertiary)]">
+          By release
+        </span>
+        <h3 className="mt-1 mb-0 text-lg font-semibold">Version distribution</h3>
+      </div>
       <div style={{ height: 220 }}>
         <ResponsiveContainer width="100%" height="100%" minWidth={0}>
           <PieChart>
@@ -95,8 +101,9 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
               cy="50%"
               labelLine={false}
               outerRadius={90}
-              fill="#8884d8"
               dataKey="value"
+              stroke="var(--color-bg-surface)"
+              strokeWidth={2}
             >
               {data.map((_, index) => (
                 <Cell
@@ -109,11 +116,11 @@ const PopularityChart: React.FC<PopularityChartProps> = ({ versions }) => {
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="flex flex-wrap gap-x-3 gap-y-1.5 justify-center">
+      <div className="flex flex-wrap gap-x-3 gap-y-1.5">
         {data.map((entry, index) => (
-          <div key={entry.name} className="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]">
+          <div key={entry.name} className="flex items-center gap-1.5 font-code text-[0.68rem] text-[var(--color-text-secondary)]">
             <span
-              className="w-2.5 h-2.5 rounded-sm flex-none"
+              className="h-2.5 w-2.5 flex-none rounded-sm"
               style={{ backgroundColor: COLORS[index % COLORS.length] }}
             />
             <span>{entry.name}</span>

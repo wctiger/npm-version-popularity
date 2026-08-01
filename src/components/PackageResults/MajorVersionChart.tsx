@@ -14,16 +14,16 @@ interface MajorVersionChartProps {
 }
 
 const COLORS = [
-  "#3b82f6", // blue-500
-  "#f97316", // orange-500
-  "#22c55e", // green-500
-  "#ef4444", // red-500
-  "#eab308", // yellow-500
-  "#8b5cf6", // violet-500
-  "#06b6d4", // cyan-500
-  "#ec4899", // pink-500
-  "#84cc16", // lime-500
-  "#f59e0b", // amber-500
+  "#173fb7",
+  "#ff7a43",
+  "#176145",
+  "#3974ff",
+  "#ff8b59",
+  "#2a9a70",
+  "#7298ff",
+  "#f4662a",
+  "#53617a",
+  "#bbc3d1",
 ];
 
 const CustomTooltip = ({
@@ -38,10 +38,14 @@ const CustomTooltip = ({
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-background border rounded p-2 shadow-sm text-sm">
-        <p className="font-medium">{data.name}</p>
-        <p>Downloads: {data.value.toLocaleString()}</p>
-        <p>Share: {data.percentage}%</p>
+      <div className="chart-tooltip p-3 text-sm">
+        <p className="mb-2 font-semibold">{data.name}</p>
+        <p className="mb-1 text-[var(--color-text-secondary)]">
+          Downloads: {data.value.toLocaleString()}
+        </p>
+        <p className="mb-0 text-[var(--color-text-secondary)]">
+          Share: {data.percentage}%
+        </p>
       </div>
     );
   }
@@ -99,10 +103,13 @@ const MajorVersionChart: React.FC<MajorVersionChartProps> = ({ versions }) => {
   }, [versions]);
 
   return (
-    <div className="w-full flex flex-col gap-3">
-      <h3 className="text-sm font-medium text-[var(--color-text-muted)] text-center">
-        Major Version Distribution
-      </h3>
+    <div className="flex w-full flex-col gap-3">
+      <div>
+        <span className="font-code text-[0.7rem] uppercase tracking-[0.08em] text-[var(--color-text-tertiary)]">
+          By major line
+        </span>
+        <h3 className="mt-1 mb-0 text-lg font-semibold">Major distribution</h3>
+      </div>
       <div style={{ height: 220 }}>
         <ResponsiveContainer width="100%" height="100%" minWidth={0}>
           <PieChart>
@@ -112,8 +119,9 @@ const MajorVersionChart: React.FC<MajorVersionChartProps> = ({ versions }) => {
               cy="50%"
               labelLine={false}
               outerRadius={90}
-              fill="#8884d8"
               dataKey="value"
+              stroke="var(--color-bg-surface)"
+              strokeWidth={2}
             >
               {data.map((_, index) => (
                 <Cell
@@ -126,11 +134,11 @@ const MajorVersionChart: React.FC<MajorVersionChartProps> = ({ versions }) => {
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="flex flex-wrap gap-x-3 gap-y-1.5 justify-center">
+      <div className="flex flex-wrap gap-x-3 gap-y-1.5">
         {data.map((entry, index) => (
-          <div key={entry.name} className="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]">
+          <div key={entry.name} className="flex items-center gap-1.5 font-code text-[0.68rem] text-[var(--color-text-secondary)]">
             <span
-              className="w-2.5 h-2.5 rounded-sm flex-none"
+              className="h-2.5 w-2.5 flex-none rounded-sm"
               style={{ backgroundColor: COLORS[index % COLORS.length] }}
             />
             <span>{entry.name}</span>

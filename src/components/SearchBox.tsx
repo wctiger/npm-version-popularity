@@ -27,8 +27,8 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 }) => {
   if (isCompact) {
     return (
-      <div className="flex items-center gap-4 mb-6 flex-wrap justify-between">
-        <div className="flex-[2_0_300px] max-w-md">
+      <section className="my-8 flex flex-wrap items-center justify-between gap-4 border-b border-[var(--color-border-default)] pb-8">
+        <div className="flex-[2_0_280px] max-w-lg">
           <PackageSearchInput
             searchTerm={searchTerm}
             onSearchTermChange={onSearchTermChange}
@@ -36,23 +36,23 @@ const SearchBox: React.FC<SearchBoxProps> = ({
             isLoading={isLoading}
           />
         </div>
-        <div className="flex items-center gap-2 flex-wrap ml-auto">
+        <div className="ml-auto flex flex-[1_0_280px] flex-wrap items-center justify-end gap-2">
           {onFormalOnlyChange && (
             <button
               onClick={() => onFormalOnlyChange(!formalOnly)}
               disabled={isLoading}
-              title="Show only formal (stable) releases without pre-release tags"
-              className={`h-9 px-3 text-xs rounded-md border transition-colors flex items-center gap-1.5 ${
+              title="Show only stable releases without prerelease tags"
+              className={`h-11 rounded-[var(--radius-control)] border px-4 font-code text-[0.7rem] uppercase tracking-[0.06em] transition-colors ${
                 formalOnly
-                  ? "bg-[var(--color-primary)] text-[var(--color-primary-foreground)] border-[var(--color-primary)] hover:bg-[var(--color-primary)]/90"
-                  : "bg-[var(--color-bg)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text)]"
-              } disabled:opacity-40 disabled:pointer-events-none`}
+                  ? "border-[var(--color-bg-brand)] bg-[var(--color-bg-brand)] text-[var(--color-text-inverse)] hover:bg-[var(--color-bg-brand-hover)]"
+                  : "border-[var(--color-border-default)] bg-[var(--color-bg-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-subtle)] hover:text-[var(--color-text-primary)]"
+              } disabled:pointer-events-none disabled:opacity-40`}
             >
               Formal only
             </button>
           )}
           {onVersionFilter && (
-            <div className="flex-[1_0_200px] max-w-sm">
+            <div className="flex-[1_0_240px] max-w-md">
               <VersionFilterInput
                 onVersionFilter={onVersionFilter}
                 versionFilter={versionFilter}
@@ -61,30 +61,61 @@ const SearchBox: React.FC<SearchBoxProps> = ({
             </div>
           )}
         </div>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1 w-full px-4">
-      <div className="w-full max-w-xl space-y-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-semibold text-[var(--color-text)]">
-            npm Version Popularity
+    <section className="flex flex-1 flex-col justify-center py-16 md:py-24">
+      <div className="grid items-end gap-10 lg:grid-cols-[minmax(0,1.55fr)_minmax(280px,0.65fr)]">
+        <div>
+          <div className="eyebrow mb-6">npm version intelligence</div>
+          <h1 className="m-0 max-w-[850px] text-[clamp(3.4rem,8.5vw,7.8rem)] leading-[0.84] tracking-[-0.07em] text-[var(--color-text-primary)]">
+            Find the version{" "}
+            <em className="text-[var(--color-text-brand)]">everyone chose.</em>
           </h1>
-          <p className="text-lg text-[var(--color-text-muted)]">
-            Explore package version downloads and popularity
-          </p>
         </div>
-        <PackageSearchInput
-          searchTerm={searchTerm}
-          onSearchTermChange={onSearchTermChange}
-          onSearch={onSearch}
-          isLoading={isLoading}
-          size="large"
-        />
+        <p className="m-0 max-w-[30rem] text-lg leading-relaxed text-[var(--color-text-secondary)]">
+          Compare one week of npm downloads across every release. See the
+          versions teams actually run before you install or upgrade.
+        </p>
       </div>
-    </div>
+
+      <div className="mt-14 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(420px,1.45fr)] lg:items-stretch">
+        <div className="flex flex-col justify-between border border-[var(--color-border-default)] bg-[var(--color-bg-surface)] p-6 shadow-[var(--shadow-low)] md:p-8">
+          <div>
+            <span className="font-code text-[0.7rem] uppercase tracking-[0.08em] text-[var(--color-text-tertiary)]">
+              Start with a package
+            </span>
+            <h2 className="mt-3 mb-8 text-[clamp(1.7rem,3vw,2.4rem)] leading-tight tracking-[-0.035em]">
+              Search the public npm registry
+            </h2>
+          </div>
+          <PackageSearchInput
+            searchTerm={searchTerm}
+            onSearchTermChange={onSearchTermChange}
+            onSearch={onSearch}
+            isLoading={isLoading}
+            size="large"
+          />
+        </div>
+
+        <div className="signal-path">
+          <div className="signal-step">
+            <span>01 · Package</span>
+            <strong>Choose any public npm package</strong>
+          </div>
+          <div className="signal-step">
+            <span>02 · Releases</span>
+            <strong>Compare every downloaded version</strong>
+          </div>
+          <div className="signal-step">
+            <span>03 · Adoption</span>
+            <strong>Spot the dominant production signal</strong>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
